@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  * Created by tony on 29/07/2016.
  * Object has all card information
@@ -15,9 +17,9 @@ public class MineralCard extends Card{ //inherit name from card and add extra in
     private String economicValue;
 
     public MineralCard(String name, String formula, String classification, String crystalSystem, String occurrence, Double hardness,
-                       Double specificGravity, String cleavage, String crustalAbundance, String economicValue) { //10 attribute constructor
+                       Double specificGravity, String cleavage, String crustalAbundance, String economicValue, JButton button, ImageIcon image) { //10 attribute constructor
 
-        super(name);
+        super(name, button, image);
         this.formula = formula;
         this.classification = classification;
         this.crystalSystem = crystalSystem;
@@ -59,7 +61,6 @@ public class MineralCard extends Card{ //inherit name from card and add extra in
 
     @Override
     public String getName(){ return this.name;}
-
 
     public String toString() { //used to print card information
 

@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  * Created by tony on 6/08/2016.
  */
@@ -5,9 +7,9 @@ public class TrumpCard extends Card{ //trump card information
 
     private String category;
 
-    public TrumpCard(String name, String category){ //trump card constructor
+    public TrumpCard(String name, String category, JButton button, ImageIcon image){ //trump card constructor
 
-        super(name);
+        super(name, button, image);
         this.category = category;
     }
 
