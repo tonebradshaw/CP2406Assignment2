@@ -20,6 +20,10 @@ public class GameDisplay extends JFrame implements ActionListener {
     private JTextField player1Name, player2Name, player3Name, player4Name, player5Name;
     private Font font;
     private JPanel displayHand, top;
+    private Color color;
+    private String category;
+    private int number;
+
     static ArrayList<Card> hand;
     static ArrayList <Card> discardedCards;
     static ArrayList <Card> shuffledDeck = new ArrayList<>();
@@ -27,7 +31,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     static Card activeCard;
     static Player playerOne, playerTwo, playerThree, playerFour, playerFive;
 
-    static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, category, question, card, holdPlayerNumber;
+    static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber;
     static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
     static String choice, activeCategory, activeCardNotice, menu;
 
@@ -41,10 +45,11 @@ public class GameDisplay extends JFrame implements ActionListener {
     public GameDisplay(){
 
         super("Mineral Supertrumps Game"); //Frame name
-        getContentPane().setBackground(Color.GREEN);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        color = new Color(0,153,76);
+        getContentPane().setBackground(color);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize(); //get screen size; use next 2 lines as well
         int width = (int)screen.getWidth();
         int height = (int)screen.getHeight();
@@ -54,23 +59,23 @@ public class GameDisplay extends JFrame implements ActionListener {
         numberOfPlayers = 1;
 
         panel = new JPanel();
-        panel.setBackground(Color.CYAN);
+        panel.setBackground(color);
 
         panel1 = new JPanel();
-        panel1.setBackground(Color.GREEN);
+        panel1.setBackground(color);
 
         panel3 = new JPanel();
-        panel3.setBackground(Color.GREEN);
+        panel3.setBackground(color);
         panel3.setLayout(new GridLayout(0, 2));
         panel3.setVisible(false);
 
         panel4 = new JPanel();
-        panel4.setBackground(Color.GREEN);
+        panel4.setBackground(color);
         panel4.setLayout(new GridLayout(0, 2));
         panel4.setVisible(false);
 
         panel5 = new JPanel();
-        panel5.setBackground(Color.GREEN);
+        panel5.setBackground(color);
         panel5.setLayout(new GridLayout(0, 2));
         panel5.setVisible(false);
 
@@ -278,7 +283,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 
                         playerNumber = (int)(Math.random() * numberOfPlayers); //randomly choose player 1, the following players are in order of entry
                         holdPlayerNumber = playerNumber;
-                        players = Play.buildFirstThreePlayers(numberOfPlayers, playerNumber, playerNames, players);
+                        players = buildFirstThreePlayers();
                         for(int i=0; i < NUMBER_OF_CARDS_PER_HAND; ++i){ //add 8 cards to each hand and remove those cards from deck
 
                             Play.fillThreeHands();
@@ -288,15 +293,13 @@ public class GameDisplay extends JFrame implements ActionListener {
                         Play.displayPlayerSequence(); //window showing the players in order of play
                         Play.playerWaitToStart(); //wait til player is ready
                         displayHand = new DisplayHand(players[playerNumber].getHand());
-                        System.out.println(numberOfPlayers + " before top");
                         top = new Top();
-                        System.out.println(numberOfPlayers + " after top");
                         panel1.setLayout(new BorderLayout());
 
                         if(players[playerNumber].getHand().size() < 7 || (players[playerNumber].getHand().size() > 8 &&
                                 players[playerNumber].getHand().size() <= 14)){ //use border layout or flow layout with JPanel depending on number of cards in hand
 
-                            panel.setBackground(Color.GREEN);
+                            panel.setBackground(color);
                             panel.setLayout(new FlowLayout());
                             panel.add(displayHand);
                             panel1.add(panel, BorderLayout.SOUTH);
@@ -310,6 +313,27 @@ public class GameDisplay extends JFrame implements ActionListener {
                         panel1.add(top, BorderLayout.WEST);
                         top.setVisible(true);
                         panel1.setVisible(true);
+
+                        if(gos == 0){ //first play
+                            do {
+                                category = JOptionPane.showInputDialog(null, "You need to choose the Category before discarding\n" +
+                                        "1) Hardness \n2) Specific Gravity\n3) Cleavage\n4) Crustal Abundance\n5) Economic Value");
+                                try{
+                                    number = Integer.parseInt(category);
+
+                                }catch (Exception et){
+
+                                    JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
+                                }
+                                if(number < 0 || number > 5){
+
+                                    JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
+                                }
+                            }while(number < 1 || number > 5);
+
+                            gos = 1;
+                        }
+                        System.out.println(category);
                     }
                     break;
 
@@ -360,5 +384,32 @@ public class GameDisplay extends JFrame implements ActionListener {
         playerNames[1] = playerNameTwo;
         playerNameThree = player3Name.getText();
         playerNames[2] = playerNameThree;
+    }
+    public Player [] buildFirstThreePlayers(){ //build three players using the names in order of play; add names to playerOrder array
+
+        playerOne = new Player(playerNames[playerNumber]);
+        players[playerNumber] = playerOne;
+
+        incrementPlayerNumber(playerNumber);
+        playerTwo = new Player(playerNames[playerNumber]);
+        players[playerNumber] = playerTwo;
+
+        incrementPlayerNumber(playerNumber);
+        playerThree = new Player(playerNames[playerNumber]);
+        players[playerNumber] = playerThree;
+
+        return players;
+    }
+    public static int incrementPlayerNumber(int number){
+
+        ++playerNumber;
+        System.out.println(playerNumber + " function");
+
+        if(playerNumber > numberOfPlayers - 1){
+
+            playerNumber = 0;
+        }
+        return playerNumber;
+
     }
 }
