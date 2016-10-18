@@ -10,7 +10,6 @@ public class Deck implements ActionListener{
 
     protected Card [] cards;
     protected JButton [] jbuttons;
-    static public final int DECK_SIZE = 60;
 
     private ImageIcon actinoliteImage = new ImageIcon("src\\CardImages\\Actinolite.png");
     private JButton actinolite = new JButton(actinoliteImage);
@@ -132,6 +131,10 @@ public class Deck implements ActionListener{
     private JButton tourmaline = new JButton(tourmalineImage);
     private ImageIcon zirconImage = new ImageIcon("src\\CardImages\\Zircon.png");
     private JButton zircon = new JButton(zirconImage);
+
+    static Object jbuttonSource;
+    static final int DECK_SIZE = 60;
+    static Card selectedCard;
 
     public Deck() { //create deck of cards with trumps spread evenly throughout; add JButtons and ImageIcons to constructor
 
@@ -379,12 +382,18 @@ public class Deck implements ActionListener{
     }
     public void actionPerformed(ActionEvent ae){
 
-        Object source = ae.getSource();
+        jbuttonSource = ae.getSource();
 
         for(int select = 0; select < DECK_SIZE; ++select) {
 
-            if (source == jbuttons[select]) {
-
+            if (jbuttonSource == jbuttons[select]) {
+                selectedCard = cards[select];
+                System.out.println(GameDisplay.players[GameDisplay.playerNumber].getHand());
+                int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
+                GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index);
+                System.out.println(GameDisplay.players[GameDisplay.playerNumber].getHand());
+                Play.discardedCards.add(0, selectedCard);
+                System.out.println(Play.discardedCards);
                 jbuttons[select].setVisible(false);
             }
 

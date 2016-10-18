@@ -38,7 +38,7 @@ public class Play {
         }
         Collections.shuffle(shuffledDeck); //shuffle the deck
 
-        playerNames = new String [numberOfPlayers]; //array containing player's names
+        playerNames = new String[numberOfPlayers]; //array containing player's names
         discardedCards = new ArrayList<>(); //arrayList containing the discard pile
         players = new Player[numberOfPlayers]; //array containing Player objects
 
@@ -48,347 +48,10 @@ public class Play {
         //input - enter how many players
         GameDisplay game = new GameDisplay();
         game.setVisible(true);
-
-
-        switch(numberOfPlayers){ //build selected number of hands of 8 cards
-
-            case 3: //create 3 player's hands
-
-
-
-                playerNumber = (int)(Math.random() * numberOfPlayers); //randomly choose player 1, the following players are in order of entry
-
-                //buildFirstThreePlayers(); //build playerOne, playerTwo and playerThree
-
-                for(int i=0; i < NUMBER_OF_CARDS_PER_HAND; ++i){ //add 8 cards to each hand and remove those cards from deck
-
-                    fillThreeHands();
-                }
-                if(gos == 0) { //first player plays
-
-                    firstPlayOfGame();
-                }
-                do{
-                    compare = 0; //set compare to false
-                    incrementPlayerNumber(); //next player
-                    playerWaitToStart(); //wait til player is ready
-                    holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
-
-                    if(players[playerNumber].getPickUpCard() == 1 && (players[incrementPlayerNumber()].getPickUpCard() +
-                            players[incrementPlayerNumber()].getPickUpCard()) == 0){ //if player has picked up and none of the remaining 2 players
-                                                                                        //have picked up in the last round then player must pass
-
-                        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
-                        JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
-                                "\nMore then 1 player has discarded per round since you picked up" +
-                                "\nNo Trump Card has been thrown since you picked up" +
-                                "\nYou therefore must pass this turn");
-                    }else{
-
-                        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
-
-                        do { //get card and check whether selected card category value > active card value
-
-                            card = selectPlayerCard(players[playerNumber]); //return list selection
-
-                            if (card == players[playerNumber].getHand().size()) { //pick up from deck
-
-                                players[playerNumber].setPickUpCard(1); //card picked up
-
-                                if (shuffledDeck.size() == 0) { //if there are no more cards to pick up
-
-                                    hold = new Card[1]; //create holding array
-                                    hold[0] = discardedCards.get(0); //add active card to array
-                                    discardedCards.remove(0); //remove active card from discard pile
-
-                                    for (int i = discardedCards.size() - 1; i >= 0; --i) { //transfer discards to shuffled deck
-
-                                        shuffledDeck.add(discardedCards.get(i)); //add card to deck
-                                        discardedCards.remove(i); //remove card from pile
-                                    }
-                                    Collections.shuffle(shuffledDeck); //shuffle the deck
-                                    discardedCards.add(hold[0]); //add active card to empty discard pile
-                                }
-                                players[playerNumber].getHand().add(shuffledDeck.get(0)); //get another card
-                                shuffledDeck.remove(0); //remove card from deck
-                                compare = 1; //allow
-
-                            } else {
-                                compare = Game.compareValues(hand.get(card)); //compare card selected to active card
-
-                                if (compare == 1) {
-                                    players[playerNumber].setPickUpCard(0); //set value to card thrown
-                                    discardedCards.add(0, hand.get(card)); //add chosen card to discard pile
-                                    hand.remove(card); //remove card from hand
-                                }
-                            }
-                        } while (compare == 0); //loop until compare != 0
-                        activeCard = discardedCards.get(0); //select active card after throw
-
-                        if(activeCard.getName().startsWith("The ")){ //if trump card thrown, reset all pickUpCard values
-
-                            holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
-                            players[playerNumber].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            playerNumber = holdPlayerNumber; //reset playerNumber
-                        }
-                        activeCardNotice = Game.getActiveCardValues(); //add to display to show the active category and value
-                    }
-
-                }while(playerOne.getHand().size() > 0 && playerTwo.getHand().size() > 0 && playerThree.getHand().size() > 0); //loop until end of game
-                JOptionPane.showMessageDialog(null, "Game Over");
-                //display winner
-                if(playerOne.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerOne.getName());
-                }else if(playerTwo.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerTwo.getName());
-                }else if(playerThree.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerThree.getName());
-                }
-                System.exit(0); //end program
-                break;
-
-            case 4: // create 4 player's hands
-
-
-
-                System.out.print("Enter fourth player name: "); //enter 4th player's name
-
-                playerNumber = (int)(Math.random() * numberOfPlayers); //randomly choose player 1, the following players are in order of entry
-
-                //buildFirstThreePlayers();
-
-                incrementPlayerNumber();
-                playerFour = new Player(playerNames[playerNumber]); //build 4th player
-                players[playerNumber] = playerFour;
-
-                for(int i=0; i < NUMBER_OF_CARDS_PER_HAND; ++i){ //add 8 cards to each hand and delete those cards from deck
-
-                    fillThreeHands();
-                    playerFour.getHand().add(shuffledDeck.get(0));
-                    shuffledDeck.remove(0);
-                }
-                if(gos == 0) { //first player plays
-
-                    firstPlayOfGame();
-                }
-                do{
-                    compare = 0; //set compare to false
-                    incrementPlayerNumber(); //next player
-                    playerWaitToStart(); //wait til player is ready
-                    holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
-
-                    //if player has picked up and 1 or less of the remaining 3 players have picked up in the last round then player must pass
-                    if(players[playerNumber].getPickUpCard() == 1 && (players[incrementPlayerNumber()].getPickUpCard() +
-                            players[incrementPlayerNumber()].getPickUpCard() + players[incrementPlayerNumber()].getPickUpCard()) <= 1){
-
-                        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
-                        JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
-                                "\nMore then 1 player has discarded per round since you picked up" +
-                                "\nNo Trump Card has been thrown since you picked up" +
-                                "\nYou therefore must pass this turn");
-                    }else{
-
-                        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
-
-                        do { //get card and check whether selected card category value > active card value
-
-                            card = selectPlayerCard(players[playerNumber]); //return list selection
-
-                            if (card == players[playerNumber].getHand().size()) { //pick up from deck
-
-                                players[playerNumber].setPickUpCard(1); //card picked up
-
-                                if (shuffledDeck.size() == 0) { //if there are no more cards to pick up
-
-                                    hold = new Card[1]; //create holding array
-                                    hold[0] = discardedCards.get(0); //add active card to array
-                                    discardedCards.remove(0); //remove active card from discard pile
-
-                                    for (int i = discardedCards.size() - 1; i >= 0; --i) { //transfer discards to shuffled deck
-
-                                        shuffledDeck.add(discardedCards.get(i)); //add card to deck
-                                        discardedCards.remove(i); //remove card from pile
-                                    }
-                                    Collections.shuffle(shuffledDeck); //shuffle the deck
-                                    discardedCards.add(hold[0]); //add active card to empty discard pile
-                                }
-                                players[playerNumber].getHand().add(shuffledDeck.get(0)); //get another card
-                                shuffledDeck.remove(0); //remove card from deck
-                                compare = 1; //allow
-
-                            } else {
-                                compare = Game.compareValues(hand.get(card)); //compare card selected to active card
-
-                                if (compare == 1) {
-                                    players[playerNumber].setPickUpCard(0); //set value to card thrown
-                                    discardedCards.add(0, hand.get(card)); //add chosen card to discard pile
-                                    hand.remove(card); //remove card from hand
-                                }
-                            }
-                        } while (compare == 0); //loop until compare != 0
-                        activeCard = discardedCards.get(0); //select active card after throw
-
-                        if(activeCard.getName().startsWith("The ")){ //if trump card thrown, reset all pickUpCard values
-
-                            holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
-                            players[playerNumber].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            playerNumber = holdPlayerNumber; //reset playerNumber
-                        }
-                        activeCardNotice = Game.getActiveCardValues(); //add to display to show the active category and value
-                    }
-
-                }while(playerOne.getHand().size() > 0 && playerTwo.getHand().size() > 0 && playerThree.getHand().size() > 0
-                        && playerFour.getHand().size() > 0); //loop until end of game
-                JOptionPane.showMessageDialog(null, "Game Over");
-                //display winner
-                if(playerOne.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerOne.getName());
-                }else if(playerTwo.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerTwo.getName());
-                }else if(playerThree.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerThree.getName());
-                }else if(playerFour.getHand().size() == 0) {
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerFour.getName());
-                }
-                System.exit(0); //end program
-                break;
-
-            case 5: // create 5 player's hands
-
-                /*enterFirstThreePlayersNames(); //enter first three player's names
-
-                System.out.print("Enter fourth player name: "); //add 4th player's name
-                input = new Scanner(System.in);
-                playerNameFour = input.nextLine();
-                playerNames [3] = playerNameFour;
-
-                System.out.print("Enter fifth player name: "); //add 5th player's name
-                input = new Scanner(System.in);
-                playerNameFive = input.nextLine();
-                playerNames [4] = playerNameFive;
-
-                playerNumber = (int)(Math.random() * numberOfPlayers); //randomly choose player 1, the following players are in order of entry
-
-                //buildFirstThreePlayers();
-*/
-                incrementPlayerNumber();
-                playerFour = new Player(playerNames[playerNumber]); //build 4th player
-                players[playerNumber] = playerFour;
-
-                incrementPlayerNumber();
-                playerFive = new Player(playerNames[playerNumber]); //build 5th player
-                players[playerNumber] = playerFive;
-
-                for(int i=0; i < NUMBER_OF_CARDS_PER_HAND; ++i){ //add 8 cards to each hand and delete those cards from deck
-
-                    fillThreeHands();
-                    playerFour.getHand().add(shuffledDeck.get(0));
-                    shuffledDeck.remove(0);
-                    playerFive.getHand().add(shuffledDeck.get(0));
-                    shuffledDeck.remove(0);
-                }
-                if(gos == 0) { //first player plays
-
-                    firstPlayOfGame();
-                }
-                do{
-                    compare = 0; //set compare to false
-                    incrementPlayerNumber(); //next player
-                    playerWaitToStart(); //wait til player is ready
-                    holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
-
-                    if(players[playerNumber].getPickUpCard() == 1 && (players[incrementPlayerNumber()].getPickUpCard() +
-                            players[incrementPlayerNumber()].getPickUpCard() + players[incrementPlayerNumber()].getPickUpCard() +
-                            players[incrementPlayerNumber()].getPickUpCard()) <= 2){ //if player has picked up and 2 or less
-                                            //of the remaining 4 players have picked up in the last round then player must pass
-
-                        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
-                        JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
-                                "\nMore then 1 player has discarded per round since you picked up" +
-                                "\nNo Trump Card has been thrown since you picked up" +
-                                "\nYou therefore must pass this turn");
-                    }else{
-
-                        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
-
-                        do { //get card and check whether selected card category value > active card value
-
-                            card = selectPlayerCard(players[playerNumber]); //return list selection
-
-                            if (card == players[playerNumber].getHand().size()) { //pick up from deck
-
-                                players[playerNumber].setPickUpCard(1); //card picked up
-
-                                if (shuffledDeck.size() == 0) { //if there are no more cards to pick up
-
-                                    hold = new Card[1]; //create holding array
-                                    hold[0] = discardedCards.get(0); //add active card to array
-                                    discardedCards.remove(0); //remove active card from discard pile
-
-                                    for (int i = discardedCards.size() - 1; i >= 0; --i) { //transfer discards to shuffled deck
-
-                                        shuffledDeck.add(discardedCards.get(i)); //add card to deck
-                                        discardedCards.remove(i); //remove card from pile
-                                    }
-                                    Collections.shuffle(shuffledDeck); //shuffle the deck
-                                    discardedCards.add(hold[0]); //add active card to empty discard pile
-                                }
-                                players[playerNumber].getHand().add(shuffledDeck.get(0)); //get another card
-                                shuffledDeck.remove(0); //remove card from deck
-                                compare = 1; //allow
-
-                            } else {
-                                compare = Game.compareValues(hand.get(card)); //compare card selected to active card
-
-                                if (compare == 1) {
-                                    players[playerNumber].setPickUpCard(0); //set value to card thrown
-                                    discardedCards.add(0, hand.get(card)); //add chosen card to discard pile
-                                    hand.remove(card); //remove card from hand
-                                }
-                            }
-                        } while (compare == 0); //loop until compare != 0
-                        activeCard = discardedCards.get(0); //select active card after throw
-
-                        if(activeCard.getName().startsWith("The ")){ //if trump card thrown, reset all pickUpCard values
-
-                            holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
-                            players[playerNumber].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            players[incrementPlayerNumber()].setPickUpCard(0);
-                            playerNumber = holdPlayerNumber; //reset playerNumber
-
-                        }
-                        activeCardNotice = Game.getActiveCardValues(); //add to display to show the active category and value
-                    }
-
-                }while(playerOne.getHand().size() > 0 && playerTwo.getHand().size() > 0 && playerThree.getHand().size() > 0
-                        && playerFour.getHand().size() > 0 && playerFive.getHand().size() > 0); //loop until end of game
-
-                JOptionPane.showMessageDialog(null, "Game Over"); //end game panel
-                //display winner
-                if(playerOne.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerOne.getName());
-                }else if(playerTwo.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerTwo.getName());
-                }else if(playerThree.getHand().size() == 0){
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerThree.getName());
-                }else if(playerFour.getHand().size() == 0) {
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerFour.getName());
-                }else if(playerFive.getHand().size() == 0) {
-                    JOptionPane.showMessageDialog(null, "Yay!! Congratz on the win " + playerFive.getName());
-                }
-                System.exit(0); //end program
-                break;
-        }
     }
-    public static Player[] buildFirstThreePlayers(int numberOfPlay, int number, String [] names, Player[] player){ //build three players using the names in order of play; add names to playerOrder array
+
+
+    /*public static Player[] buildFirstThreePlayers(int numberOfPlay, int number, String [] names, Player[] player){ //build three players using the names in order of play; add names to playerOrder array
 
         playerNumber = number;
         playerNames = names;
@@ -407,14 +70,14 @@ public class Play {
         players[playerNumber] = playerThree;
 
         return players;
-    }
+    }*/
     public static void fillThreeHands(){ //add cards to first three players hands
 
-        playerOne.getHand().add(shuffledDeck.get(0));
+        GameDisplay.playerOne.getHand().add(shuffledDeck.get(0));
         shuffledDeck.remove(0);
-        playerTwo.getHand().add(shuffledDeck.get(0));
+        GameDisplay.playerTwo.getHand().add(shuffledDeck.get(0));
         shuffledDeck.remove(0);
-        playerThree.getHand().add(shuffledDeck.get(0));
+        GameDisplay.playerThree.getHand().add(shuffledDeck.get(0));
         shuffledDeck.remove(0);
     }
     public static void displayPlayerSequence(){ //display the players names in order of play
@@ -443,7 +106,7 @@ public class Play {
     }
     public static void playerWaitToStart(){ //wait for player to respond so cards are not visible to other players
 
-        JOptionPane.showMessageDialog(null, playerNames[playerNumber] + " press OK when you are ready to play");
+        JOptionPane.showMessageDialog(null, GameDisplay.playerNames[GameDisplay.playerNumber] + " press OK when you are ready to play");
     }
     public static int selectFirstCategory(Player player){ //view first player hand and select category
 
@@ -533,6 +196,8 @@ public class Play {
     }
 
     public static int incrementPlayerNumber(){
+
+        playerNumber = Top.playerNumber;
 
         ++playerNumber;
 

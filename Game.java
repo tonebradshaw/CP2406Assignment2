@@ -17,7 +17,7 @@ public class Game {
     static String [] categories = {"Hardness", "Specific Gravity", "Cleavage", "Crustal Abundance", "Economic Value"};
     static Player [] players;
 
-    static int compare, category, question, playerNumber;
+    static int gos, compare, category, question, number, playerNumber;
     static String activeCategory;
 
     public Game(){
@@ -143,6 +143,27 @@ public class Game {
                     "\nCheck Category\nCheck Value\nTry again");
         }
         return compare;
+    }
+    public static String firstHand(){
+
+        do {
+            String category = JOptionPane.showInputDialog(null, "You need to choose the Category before discarding\n" +
+                    "1) Hardness \n2) Specific Gravity\n3) Cleavage\n4) Crustal Abundance\n5) Economic Value");
+            try{
+                number = Integer.parseInt(category);
+
+            }catch (Exception et){
+
+                JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
+            }
+            if(number < 0 || number > 5){
+
+                JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
+            }
+        }while(number < 1 || number > 5);
+
+        gos = 1;
+        return categories[number - 1];
     }
 
 }

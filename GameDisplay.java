@@ -21,7 +21,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     private Font font;
     private JPanel displayHand, top;
     private Color color;
-    private String category;
+    private String category, choice;
     private int number;
 
     static ArrayList<Card> hand;
@@ -33,7 +33,8 @@ public class GameDisplay extends JFrame implements ActionListener {
 
     static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber;
     static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
-    static String choice, activeCategory, activeCardNotice, menu;
+    static String activeCategory, activeCardNotice, menu;
+    private Card selectedCard;
 
     static final int NUMBER_OF_CARDS_PER_HAND = 8;
 
@@ -41,6 +42,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     static Card [] hold;
     static Player [] players;
 
+    static String [] categories = {"Hardness", "Specific Gravity", "Cleavage", "Crustal Abundance", "Economic Value"};
 
     public GameDisplay(){
 
@@ -314,26 +316,14 @@ public class GameDisplay extends JFrame implements ActionListener {
                         top.setVisible(true);
                         panel1.setVisible(true);
 
+
                         if(gos == 0){ //first play
-                            do {
-                                category = JOptionPane.showInputDialog(null, "You need to choose the Category before discarding\n" +
-                                        "1) Hardness \n2) Specific Gravity\n3) Cleavage\n4) Crustal Abundance\n5) Economic Value");
-                                try{
-                                    number = Integer.parseInt(category);
 
-                                }catch (Exception et){
+                            choice = Game.firstHand();
 
-                                    JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
-                                }
-                                if(number < 0 || number > 5){
+                        }else{
 
-                                    JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
-                                }
-                            }while(number < 1 || number > 5);
-
-                            gos = 1;
                         }
-                        System.out.println(category);
                     }
                     break;
 
@@ -372,7 +362,6 @@ public class GameDisplay extends JFrame implements ActionListener {
 
                     }
                     break;
-
             }
         }
     }
@@ -403,7 +392,6 @@ public class GameDisplay extends JFrame implements ActionListener {
     public static int incrementPlayerNumber(int number){
 
         ++playerNumber;
-        System.out.println(playerNumber + " function");
 
         if(playerNumber > numberOfPlayers - 1){
 
