@@ -26,7 +26,6 @@ public class DisplayHand extends JPanel {
 
         setBackground(color);
         setSize(width, height / 2);
-        System.out.println(handCards);
 
         for(int i = 0; i < handCards.size(); ++i) { //add card JButtons to DisplayHand JPanel
 

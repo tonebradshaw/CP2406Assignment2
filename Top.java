@@ -10,7 +10,7 @@ public class Top extends JPanel{
 
     private ImageIcon cardBackImage;
     private BorderLayout border = new BorderLayout();
-    private Card faceCard;
+    //private Card faceCard;
     private String categoryType, playerName1, playerName2, playerName3, playerName4;
     private JLabel label1, label1a, label2, label2a, label4, label4a;
     private Color color;
@@ -38,7 +38,9 @@ public class Top extends JPanel{
 
         color = new Color(0,153,76);
         Font font = new Font("Arial Rounded MT Bold", Font.PLAIN, 20);
-
+        if(gos != 0) {
+            activeCard = Play.discardedCards.get(0);
+        }
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize(); //find screen size
         int width = (int)screen.getWidth();
         setSize(width, 150);
@@ -129,18 +131,18 @@ public class Top extends JPanel{
 
         }else {
             //make labels2
-            if (faceCard.getName().startsWith("The ")) {
-                categoryType = ((TrumpCard) faceCard).getCategory();
+            if (activeCard.getName().startsWith("The ")) {
+                categoryType = ((TrumpCard)activeCard).getCategory();
 
                 label2 = new JLabel("<html><b>Active Card<br><br>Category: </b>" + categoryType + "&emsp<br><b>Value </b>></html>");
             } else {
                 label2 = new JLabel("<html><b><b>Active Card<br><br>Category: </b>Specific Gravity&emsp<br><b>Value > </b><html>" +
-                        ((MineralCard) faceCard).getSpecificGravity() + "&emsp");
+                        ((MineralCard)activeCard).getSpecificGravity() + "&emsp");
             }
 
             label2.setFont(font);
             label2.setForeground(Color.MAGENTA);
-            //label2a = new JLabel(faceCard.image);
+            label2a = new JLabel(activeCard.image);
         }
         //add lable2s to panel2
         //panel2.add(label2);

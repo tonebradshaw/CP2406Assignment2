@@ -24,6 +24,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     private String category, choice;
     private int number;
 
+    static volatile Boolean bool;
     static ArrayList<Card> hand;
     static ArrayList <Card> discardedCards;
     static ArrayList <Card> shuffledDeck = new ArrayList<>();
@@ -31,7 +32,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     static Card activeCard;
     static Player playerOne, playerTwo, playerThree, playerFour, playerFive;
 
-    static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber;
+    static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber, move;
     static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
     static String activeCategory, activeCardNotice, menu;
     private Card selectedCard;
@@ -41,6 +42,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     static String [] playerNames;
     static Card [] hold;
     static Player [] players;
+
 
     static String [] categories = {"Hardness", "Specific Gravity", "Cleavage", "Crustal Abundance", "Economic Value"};
 
@@ -59,6 +61,7 @@ public class GameDisplay extends JFrame implements ActionListener {
         setSize(width, height - 40);
 
         numberOfPlayers = 1;
+        gos = 0;
 
         panel = new JPanel();
         panel.setBackground(color);
@@ -316,13 +319,38 @@ public class GameDisplay extends JFrame implements ActionListener {
                         top.setVisible(true);
                         panel1.setVisible(true);
 
-
+                        bool = true;
                         if(gos == 0){ //first play
-
+                            System.out.println(bool + " before " + gos);
                             choice = Game.firstHand();
+                            gos = 1;
 
+
+
+
+                                new Thread() {
+
+
+                                    public void run() {
+
+                                        while (bool) {
+
+                                            getChangeBoolean();
+                                            Thread.interrupted();
+                                        }
+                                        System.out.println(bool);
+                                    }
+                                }.start();
+
+                            System.out.println(bool + " after " + gos);
                         }else{
 
+                            if(activeCard.getName().startsWith("The ")){
+
+                                choice = ((TrumpCard)activeCard).getCategory();
+                            }else {
+
+                            }
                         }
                     }
                     break;
@@ -398,6 +426,16 @@ public class GameDisplay extends JFrame implements ActionListener {
             playerNumber = 0;
         }
         return playerNumber;
+
+    }
+    public Boolean getChangeBoolean(){
+
+        return bool;
+    }
+
+    public static void setChangeBoolean(){
+
+        bool = false;
 
     }
 }

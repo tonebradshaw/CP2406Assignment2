@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
@@ -6,7 +8,7 @@ import java.lang.reflect.Array;
 /**
  * Created by tony on 12/08/2016.
  */
-public class Deck implements ActionListener{
+public class Deck implements ActionListener {
 
     protected Card [] cards;
     protected JButton [] jbuttons;
@@ -131,6 +133,8 @@ public class Deck implements ActionListener{
     private JButton tourmaline = new JButton(tourmalineImage);
     private ImageIcon zirconImage = new ImageIcon("src\\CardImages\\Zircon.png");
     private JButton zircon = new JButton(zirconImage);
+
+    static int move;
 
     static Object jbuttonSource;
     static final int DECK_SIZE = 60;
@@ -387,17 +391,20 @@ public class Deck implements ActionListener{
         for(int select = 0; select < DECK_SIZE; ++select) {
 
             if (jbuttonSource == jbuttons[select]) {
+                GameDisplay.setChangeBoolean();
+                System.out.println(GameDisplay.move);
                 selectedCard = cards[select];
-                System.out.println(GameDisplay.players[GameDisplay.playerNumber].getHand());
                 int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
                 GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index);
-                System.out.println(GameDisplay.players[GameDisplay.playerNumber].getHand());
                 Play.discardedCards.add(0, selectedCard);
-                System.out.println(Play.discardedCards);
                 jbuttons[select].setVisible(false);
             }
 
         }
+    }
+    public void stateChanged(ChangeEvent ce){
+
+
     }
 }
 
