@@ -384,27 +384,36 @@ public class Deck implements ActionListener {
             jbuttons[i].addActionListener(this);
         }
     }
-    public void actionPerformed(ActionEvent ae){
+    public void actionPerformed(ActionEvent ae){ //when card is clicked
 
-        jbuttonSource = ae.getSource();
+        jbuttonSource = ae.getSource(); //set which card is clicked
 
         for(int select = 0; select < DECK_SIZE; ++select) {
 
-            if (jbuttonSource == jbuttons[select]) {
-                GameDisplay.setChangeBoolean();
-                System.out.println(GameDisplay.move);
+            if (jbuttonSource == jbuttons[select]) { //find card
+
                 selectedCard = cards[select];
-                int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
-                GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index);
-                Play.discardedCards.add(0, selectedCard);
-                jbuttons[select].setVisible(false);
+                if(selectedCard == Play.shuffledDeck.get(0)){ //if card picked up
+
+                    GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
+                    Play.shuffledDeck.remove(0); //remove card from pickup deck
+
+                }else { //if card discarded
+
+                    int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
+                    GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index); //remove card from hand
+                    Play.discardedCards.add(0, selectedCard); //add card to discard pile
+
+                    jbuttons[select].setVisible(false);
+                    if(selectedCard.getName().equals("The Geologist")){
+
+                    }
+                }
+                GameDisplay.nextPlayer();
+
             }
 
         }
-    }
-    public void stateChanged(ChangeEvent ce){
-
-
     }
 }
 

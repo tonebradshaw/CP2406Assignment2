@@ -15,27 +15,28 @@ public class GameDisplay extends JFrame implements ActionListener {
     private JRadioButton three, four, five;
     private ButtonGroup group;
     private JButton button;
-    private JPanel panel, panel1, panel3, panel4, panel5;
+
     private JLabel label1, label2, player1, player2, player3, player4, player5;
     private JTextField player1Name, player2Name, player3Name, player4Name, player5Name;
     private Font font;
-    private JPanel displayHand, top;
-    private Color color;
-    private String category, choice;
-    private int number;
 
-    static volatile Boolean bool;
+    private String category;
+    private int number;
+    private Card selectedCard;
+
+    static Color color;
     static ArrayList<Card> hand;
     static ArrayList <Card> discardedCards;
     static ArrayList <Card> shuffledDeck = new ArrayList<>();
 
+    static JPanel panel1, panel, panel3, panel4, panel5, displayHand, top;
     static Card activeCard;
     static Player playerOne, playerTwo, playerThree, playerFour, playerFive;
 
-    static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber, move;
-    static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
+    static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber, numberOfCards;
+    static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive, choice;
     static String activeCategory, activeCardNotice, menu;
-    private Card selectedCard;
+
 
     static final int NUMBER_OF_CARDS_PER_HAND = 8;
 
@@ -297,11 +298,12 @@ public class GameDisplay extends JFrame implements ActionListener {
 
                         Play.displayPlayerSequence(); //window showing the players in order of play
                         Play.playerWaitToStart(); //wait til player is ready
+                        numberOfCards = players[playerNumber].getHand().size();
                         displayHand = new DisplayHand(players[playerNumber].getHand());
                         top = new Top();
                         panel1.setLayout(new BorderLayout());
 
-                        if(players[playerNumber].getHand().size() < 7 || (players[playerNumber].getHand().size() > 8 &&
+                        if(players[playerNumber].getHand().size() < 10 || (players[playerNumber].getHand().size() > 9 &&
                                 players[playerNumber].getHand().size() <= 14)){ //use border layout or flow layout with JPanel depending on number of cards in hand
 
                             panel.setBackground(color);
@@ -317,32 +319,14 @@ public class GameDisplay extends JFrame implements ActionListener {
                         }
                         panel1.add(top, BorderLayout.WEST);
                         top.setVisible(true);
+
                         panel1.setVisible(true);
 
-                        bool = true;
                         if(gos == 0){ //first play
-                            System.out.println(bool + " before " + gos);
+
                             choice = Game.firstHand();
                             gos = 1;
 
-
-
-
-                                new Thread() {
-
-
-                                    public void run() {
-
-                                        while (bool) {
-
-                                            getChangeBoolean();
-                                            Thread.interrupted();
-                                        }
-                                        System.out.println(bool);
-                                    }
-                                }.start();
-
-                            System.out.println(bool + " after " + gos);
                         }else{
 
                             if(activeCard.getName().startsWith("The ")){
@@ -407,17 +391,17 @@ public class GameDisplay extends JFrame implements ActionListener {
         playerOne = new Player(playerNames[playerNumber]);
         players[playerNumber] = playerOne;
 
-        incrementPlayerNumber(playerNumber);
+        incrementPlayerNumber();
         playerTwo = new Player(playerNames[playerNumber]);
         players[playerNumber] = playerTwo;
 
-        incrementPlayerNumber(playerNumber);
+        incrementPlayerNumber();
         playerThree = new Player(playerNames[playerNumber]);
         players[playerNumber] = playerThree;
 
         return players;
     }
-    public static int incrementPlayerNumber(int number){
+    public static int incrementPlayerNumber(){
 
         ++playerNumber;
 
@@ -428,14 +412,45 @@ public class GameDisplay extends JFrame implements ActionListener {
         return playerNumber;
 
     }
-    public Boolean getChangeBoolean(){
+    public static void nextPlayer(){
 
-        return bool;
-    }
+        incrementPlayerNumber();
+        panel1.removeAll();
+        panel1.invalidate();
+        panel1.revalidate();
+        panel1.repaint();
+        panel1.setVisible(false);
 
-    public static void setChangeBoolean(){
+        Play.displayPlayerSequence(); //window showing the players in order of play
+        Play.playerWaitToStart(); //wait til player is ready
+        numberOfCards = players[playerNumber].getHand().size();
+        displayHand = new DisplayHand(players[playerNumber].getHand());
+        top = new Top();
+        panel1.setLayout(new BorderLayout());
 
-        bool = false;
+        if(players[playerNumber].getHand().size() < 8 || (players[playerNumber].getHand().size() > 9 &&
+                players[playerNumber].getHand().size() <= 14)){ //use border layout or flow layout with JPanel depending on number of cards in hand
+
+            panel.removeAll();
+            panel.invalidate();
+            panel.revalidate();
+            panel.repaint();
+            panel.setVisible(false);
+            panel.setBackground(color);
+            panel.setLayout(new FlowLayout());
+            panel.add(displayHand);
+            panel1.add(panel, BorderLayout.SOUTH);
+            panel.setVisible(true);
+
+        }else{
+
+            panel1.add(displayHand, BorderLayout.SOUTH);
+            displayHand.setVisible(true);
+        }
+        panel1.add(top, BorderLayout.WEST);
+        top.setVisible(true);
+
+        panel1.setVisible(true);
 
     }
 }

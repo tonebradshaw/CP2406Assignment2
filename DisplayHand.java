@@ -35,7 +35,7 @@ public class DisplayHand extends JPanel {
         //add(pickUp.getButton());
 
 
-        if(handCards.size() <= 8){ //1 row if less than 10 cards else 2 rows
+        if(handCards.size() <= 9){ //1 row if less than 10 cards else 2 rows
             setLayout(grid1);
         }else{
             setLayout(grid);
