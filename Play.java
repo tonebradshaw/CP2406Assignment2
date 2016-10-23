@@ -84,6 +84,7 @@ public class Play {
 
         if(numberOfPlayers == 3) {
 
+            System.out.println("here");
             String playerSequence = "The order of play is " + playerNames[playerNumber] + ", " + playerNames[incrementPlayerNumber()] + ", "
                     + playerNames[incrementPlayerNumber()];
             incrementPlayerNumber(); //complete playerNumber cycle
@@ -262,5 +263,22 @@ public class Play {
         activeCardNotice = Game.getActiveCardValues(); //add to display to show the active category and value
 
         gos = 1; //end first player turn
+    }
+    public static void checkPile(){
+
+        System.out.println(shuffledDeck.size() + " ," + discardedCards.size());
+
+        hold = new Card[1]; //create holding array
+        hold[0] = discardedCards.get(0); //add active card to array
+        discardedCards.remove(0); //remove active card from discard pile
+
+        for (int i = 0 ; i < discardedCards.size(); ++i) { //transfer discards to shuffled deck
+
+            shuffledDeck.add(discardedCards.get(i)); //add card to deck
+            discardedCards.remove(i); //remove card from pile
+        }
+        Collections.shuffle(Play.shuffledDeck); //shuffle the deck
+        discardedCards.add(hold[0]); //add active card to empty discard pile
+
     }
 }

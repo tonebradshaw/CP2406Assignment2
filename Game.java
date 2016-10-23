@@ -93,44 +93,50 @@ public class Game {
     }
     public static int compareValues(Card card){ //compare active card and chosen card
 
-        if(activeCard.getName().startsWith("The ") || card.getName().startsWith("The ")){ //skip trump cards
+        compare = 0;
+
+        if(Play.discardedCards.get(0).getName().startsWith("The ")){
 
             compare = 1;
 
-        }else if(activeCategory.equals("Hardness")){ //compare hardness values
+        } else if(card.getName().startsWith("The ")) { //skip trump cards
+            GameDisplay.choice = ((TrumpCard) card).getCategory();
+            compare = 1;
 
-            if(((MineralCard)card).getHardness() > ((MineralCard)activeCard).getHardness()){
+        }else if(GameDisplay.choice.equals("Hardness")){ //compare hardness values
 
-                compare = 1;
-            }
-        }else if(activeCategory.equals("Specific Gravity")) { //compare specific gravity values or pass Magnetite card
-
-            if (((MineralCard) card).getSpecificGravity() > ((MineralCard) activeCard).getSpecificGravity() || card.getName().equals("Magnetite")) {
+            if(((MineralCard)card).getHardness() > ((MineralCard)Play.discardedCards.get(0)).getHardness()){
 
                 compare = 1;
             }
-        }else if(activeCategory.equals("Cleavage")) { //compare cleavage values
+        }else if(GameDisplay.choice.equals("Specific Gravity")) { //compare specific gravity values or pass Magnetite card
+
+            if (((MineralCard)card).getSpecificGravity() > ((MineralCard)Play.discardedCards.get(0)).getSpecificGravity() || card.getName().equals("Magnetite")) {
+
+                compare = 1;
+            }
+        }else if(GameDisplay.choice.equals("Cleavage")) { //compare cleavage values
 
             int index1 = Arrays.asList(cleavageHierarchy).indexOf(((MineralCard) card).getCleavage()); //get index number of played card in array
-            int index2 = Arrays.asList(cleavageHierarchy).indexOf(((MineralCard) activeCard).getCleavage()); //get index number of active card in array
+            int index2 = Arrays.asList(cleavageHierarchy).indexOf(((MineralCard) Play.discardedCards.get(0)).getCleavage()); //get index number of active card in array
 
             if (index1 > index2){ // if card cleavage is higher than active card
 
                 compare = 1;
             }
-        }else if(activeCategory.equals("Crustal Abundance")) { //compare crustal abundance values
+        }else if(GameDisplay.choice.equals("Crustal Abundance")) { //compare crustal abundance values
 
             int index1 = Arrays.asList(crustalAbundanceHierarchy).indexOf(((MineralCard) card).getCrustalAbundance()); //get index number of played card in array
-            int index2 = Arrays.asList(crustalAbundanceHierarchy).indexOf(((MineralCard) activeCard).getCrustalAbundance()); //get index number of active card in array
+            int index2 = Arrays.asList(crustalAbundanceHierarchy).indexOf(((MineralCard) Play.discardedCards.get(0)).getCrustalAbundance()); //get index number of active card in array
 
             if (index1 > index2){ // if card crustal abundance is higher than active card
 
                 compare = 1;
             }
-        }else if(activeCategory.equals("Economic Value")) { //compare economic value values
+        }else if(GameDisplay.choice.equals("Economic Value")) { //compare economic value values
 
             int index1 = Arrays.asList(economicValueHierarchy).indexOf(((MineralCard) card).getEconomicValue()); //get index number of played card in array
-            int index2 = Arrays.asList(economicValueHierarchy).indexOf(((MineralCard) activeCard).getEconomicValue()); //get index number of active card in array
+            int index2 = Arrays.asList(economicValueHierarchy).indexOf(((MineralCard) Play.discardedCards.get(0)).getEconomicValue()); //get index number of active card in array
 
             if (index1 > index2){ // if card economic value is higher than active card
 
@@ -140,7 +146,7 @@ public class Game {
         if(compare == 0){
 
             JOptionPane.showMessageDialog(null, "You cannot throw that card" +
-                    "\nCheck Category\nCheck Value\nTry again");
+                    "\n\nCheck Category\nCheck Value\nTry again");
         }
         return compare;
     }

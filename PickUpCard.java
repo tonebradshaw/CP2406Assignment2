@@ -23,8 +23,12 @@ public class PickUpCard {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                if(Play.shuffledDeck.size() == 0) {
+                    Play.checkPile();
+                }
                 selectedCard = Play.shuffledDeck.get(0); //if card picked up
 
+                System.out.println("pickup " + Play.shuffledDeck.size());
                 GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
                 Play.shuffledDeck.remove(0); //remove card from pickup deck
                 pickUp.setVisible(false);

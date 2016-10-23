@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by tony on 7/10/2016.
@@ -27,15 +28,15 @@ public class GameDisplay extends JFrame implements ActionListener {
     static Color color;
     static ArrayList<Card> hand;
     static ArrayList <Card> discardedCards;
-    static ArrayList <Card> shuffledDeck = new ArrayList<>();
+    static ArrayList <Card> shuffledDeck;
 
     static JPanel panel1, panel, panel3, panel4, panel5, displayHand, top;
     static Card activeCard;
     static Player playerOne, playerTwo, playerThree, playerFour, playerFive;
 
     static int playerNumber, numberOfPlayers, gos, compare, playGame, handCards, question, card, holdPlayerNumber, numberOfCards;
-    static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive, choice;
-    static String activeCategory, activeCardNotice, menu;
+    static String playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
+    static String choice, activeCategory, activeCardNotice, menu;
 
 
     static final int NUMBER_OF_CARDS_PER_HAND = 8;
@@ -119,11 +120,11 @@ public class GameDisplay extends JFrame implements ActionListener {
         player4 = new JLabel("Player4 Name");
         player5 = new JLabel("Player5 Name");
 
-        player1Name = new JTextField(20);
-        player2Name = new JTextField(20);
-        player3Name = new JTextField(20);
-        player4Name = new JTextField(20);
-        player5Name = new JTextField(20);
+        player1Name = new JTextField(15);
+        player2Name = new JTextField(15);
+        player3Name = new JTextField(15);
+        player4Name = new JTextField(15);
+        player5Name = new JTextField(15);
 
         panel1.add(label1, BorderLayout.CENTER);
         add(panel1);
@@ -303,7 +304,7 @@ public class GameDisplay extends JFrame implements ActionListener {
                         top = new Top();
                         panel1.setLayout(new BorderLayout());
 
-                        if(players[playerNumber].getHand().size() < 10 || (players[playerNumber].getHand().size() > 9 &&
+                        if(players[playerNumber].getHand().size() < 9 || (players[playerNumber].getHand().size() > 9 &&
                                 players[playerNumber].getHand().size() <= 14)){ //use border layout or flow layout with JPanel depending on number of cards in hand
 
                             panel.setBackground(color);
@@ -325,15 +326,12 @@ public class GameDisplay extends JFrame implements ActionListener {
                         if(gos == 0){ //first play
 
                             choice = Game.firstHand();
-                            gos = 1;
 
                         }else{
 
                             if(activeCard.getName().startsWith("The ")){
 
                                 choice = ((TrumpCard)activeCard).getCategory();
-                            }else {
-
                             }
                         }
                     }
@@ -410,7 +408,6 @@ public class GameDisplay extends JFrame implements ActionListener {
             playerNumber = 0;
         }
         return playerNumber;
-
     }
     public static void nextPlayer(){
 
