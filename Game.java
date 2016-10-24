@@ -7,18 +7,13 @@ import java.util.Arrays;
  */
 public class Game {
 
-    //static Card activeCard;
-    //static StringBuilder stringBuilder;
-
     static String [] cleavageHierarchy = {"none", "poor/none", "1 poor", "2 poor", "1 good", "1 good, 1 poor", "2 good", "3 good",
             "1 perfect", "1 perfect, 1 good", "1 perfect, 2 good", "2 perfect, 1 good", "3 perfect", "4 perfect", "6 perfect"};
     static String [] crustalAbundanceHierarchy = {"ultratrace", "trace", "low", "moderate", "high", "very high"};
     static String [] economicValueHierarchy = {"trivial", "low", "moderate", "high", "very high", "I'm rich!"};
     static String [] categories = {"Hardness", "Specific Gravity", "Cleavage", "Crustal Abundance", "Economic Value"};
-    //static Player [] players;
 
     static int gos, compare, category, question, number, playerNumber;
-    //static String activeCategory;
 
     public Game(){
     }
@@ -26,12 +21,12 @@ public class Game {
 
         compare = 0;
 
-        if(Play.discardedCards.get(0).getName().startsWith("The ")){
+        if(Play.discardedCards.get(0).getName().startsWith("The ")){ //card follows trump card
 
             resetPass();
             compare = 1;
 
-        } else if(card.getName().startsWith("The ")) { //skip trump cards
+        } else if(card.getName().startsWith("The ")) { //trump card was discarded
             GameDisplay.choice = ((TrumpCard) card).getCategory();
             compare = 1;
 
@@ -109,6 +104,7 @@ public class Game {
 
             case 3:
                 GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+                GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
                 GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
@@ -116,6 +112,7 @@ public class Game {
 
             case 4:
                 GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+                GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
@@ -124,6 +121,7 @@ public class Game {
 
             case 5:
                 GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+                GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
@@ -141,38 +139,5 @@ public class Game {
 
             System.exit(0);
         }
-        /*switch(GameDisplay.numberOfPlayers){ //reset for different player number
-
-            case 3:
-                if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0){
-
-                    GameDisplay.players[GameDisplay.playerNumber].getHand()
-                }
-                break;
-
-            case 4:
-                if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0){
-
-                    JOptionPane.showMessageDialog(null, "Game Over");
-                }
-                break;
-
-            case 5:
-                if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
-                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0){
-
-                    JOptionPane.showMessageDialog(null, "Game Over");
-                }
-                break;
-        }*/
-
     }
 }
