@@ -7,89 +7,20 @@ import java.util.Arrays;
  */
 public class Game {
 
-    static Card activeCard;
-    static StringBuilder stringBuilder;
+    //static Card activeCard;
+    //static StringBuilder stringBuilder;
 
     static String [] cleavageHierarchy = {"none", "poor/none", "1 poor", "2 poor", "1 good", "1 good, 1 poor", "2 good", "3 good",
             "1 perfect", "1 perfect, 1 good", "1 perfect, 2 good", "2 perfect, 1 good", "3 perfect", "4 perfect", "6 perfect"};
     static String [] crustalAbundanceHierarchy = {"ultratrace", "trace", "low", "moderate", "high", "very high"};
     static String [] economicValueHierarchy = {"trivial", "low", "moderate", "high", "very high", "I'm rich!"};
     static String [] categories = {"Hardness", "Specific Gravity", "Cleavage", "Crustal Abundance", "Economic Value"};
-    static Player [] players;
+    //static Player [] players;
 
     static int gos, compare, category, question, number, playerNumber;
-    static String activeCategory;
+    //static String activeCategory;
 
     public Game(){
-    }
-    static String getActiveCardValues(){ //build message at top of selection display panel
-
-        stringBuilder = new StringBuilder(); //build message
-
-        if(activeCard.getName().startsWith("The ")){ //check if active card is a trump card
-            stringBuilder.append("Active Card is: "); //add active card name
-            stringBuilder.append(activeCard.getName());
-            if(!((TrumpCard)activeCard).getCategory().equals("all")){ //if active card category is not "all"
-
-                activeCategory = ((TrumpCard)activeCard).getCategory(); //select trump card category as active category
-            }
-            if(activeCard.getName().equals("The Geophysicist")){ //if trump card is The Geophysicist
-                stringBuilder.append("\nYou may also throw the \"Magnetite\" card");
-                activeCategory = "Specific Gravity"; //select specific gravity as the active category
-            } else if(activeCard.getName().equals("The Geologist")){ //if active card category is "all", player needs to choose category
-                do { //view cards and select active category until satisfied
-
-                    category = Play.selectFirstCategory(players[playerNumber]); //display cards and select category
-                    question = Play.checkCategory(category); //check selected category
-
-                }while(question != 0); //until category is accepted
-
-                activeCategory = categories[category];
-            }
-            stringBuilder.append("\nThe Active category is "); //add category to message
-            stringBuilder.append(activeCategory);
-            stringBuilder.append("\n");
-
-            return stringBuilder.toString();
-
-        }else { //message if active card is a mineral card
-            stringBuilder.append("Active Card is: ");
-            stringBuilder.append(activeCard.getName());
-            stringBuilder.append( ". ");
-            stringBuilder.append("\nThe Active category is ");
-            stringBuilder.append(activeCategory);
-            stringBuilder.append(".\n"); //print active card and chosen active category
-
-            //select message for each category
-            if(activeCategory.equals("Hardness")){
-                stringBuilder.append("Your ");
-                stringBuilder.append(activeCategory);
-                stringBuilder.append(" value needs to be > ");
-                stringBuilder.append(((MineralCard) activeCard).getHardness());
-            }else if(activeCategory.equals("Specific Gravity")){
-                stringBuilder.append("Your ");
-                stringBuilder.append(activeCategory);
-                stringBuilder.append(" value needs to be > ");
-                stringBuilder.append(((MineralCard) activeCard).getSpecificGravity());
-            }else if(activeCategory.equals("Cleavage")){
-                stringBuilder.append("Your ");
-                stringBuilder.append(activeCategory);
-                stringBuilder.append(" value needs to be > ");
-                stringBuilder.append(((MineralCard)activeCard).getCleavage());
-            }else if(activeCategory.equals("Crustal Abundance")){
-                stringBuilder.append("Your ");
-                stringBuilder.append(activeCategory);
-                stringBuilder.append(" value needs to be > ");
-                stringBuilder.append(((MineralCard)activeCard).getCrustalAbundance());
-            }else if(activeCategory.equals("Economic Value")){
-                stringBuilder.append("Your ");
-                stringBuilder.append(activeCategory);
-                stringBuilder.append(" value needs to be > ");
-                stringBuilder.append(((MineralCard)activeCard).getEconomicValue());
-            }
-            stringBuilder.append("\n");
-        }
-        return stringBuilder.toString();
     }
     public static int compareValues(Card card){ //compare active card and chosen card
 
@@ -97,6 +28,7 @@ public class Game {
 
         if(Play.discardedCards.get(0).getName().startsWith("The ")){
 
+            resetPass();
             compare = 1;
 
         } else if(card.getName().startsWith("The ")) { //skip trump cards
@@ -171,5 +103,76 @@ public class Game {
         gos = 1;
         return categories[number - 1];
     }
+    public static void resetPass(){ //reset all pass values for all players
 
+        switch(GameDisplay.numberOfPlayers){ //reset for different player number
+
+            case 3:
+                GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+                break;
+
+            case 4:
+                GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+                break;
+
+            case 5:
+                GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickUpCard(0);
+                GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+                break;
+        }
+    }
+    public static void gameOver(){ //display game over, winner and end game
+
+        if(GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0){
+
+            JOptionPane.showMessageDialog(null, "Game Over");
+            JOptionPane.showMessageDialog(null, "The Winner is " + GameDisplay.players[GameDisplay.playerNumber].getName());
+
+            System.exit(0);
+        }
+        /*switch(GameDisplay.numberOfPlayers){ //reset for different player number
+
+            case 3:
+                if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0){
+
+                    GameDisplay.players[GameDisplay.playerNumber].getHand()
+                }
+                break;
+
+            case 4:
+                if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0){
+
+                    JOptionPane.showMessageDialog(null, "Game Over");
+                }
+                break;
+
+            case 5:
+                if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0 ||
+                        GameDisplay.players[GameDisplay.incrementPlayerNumber()].getHand().size() == 0){
+
+                    JOptionPane.showMessageDialog(null, "Game Over");
+                }
+                break;
+        }*/
+
+    }
 }

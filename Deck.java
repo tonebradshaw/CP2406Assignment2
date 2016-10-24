@@ -4,6 +4,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
+import java.util.Collections;
 
 /**
  * Created by tony on 12/08/2016.
@@ -134,8 +135,8 @@ public class Deck implements ActionListener {
     private ImageIcon zirconImage = new ImageIcon("src\\CardImages\\Zircon.png");
     private JButton zircon = new JButton(zirconImage);
 
-    static int move;
-
+    static int compare;
+    //static Card [] hold;
     static Object jbuttonSource;
     static final int DECK_SIZE = 60;
     static Card selectedCard;
@@ -321,7 +322,7 @@ public class Deck implements ActionListener {
                 "igneous metamorphic sedimentary", 5.0, 5.3, "1 good, 1 poor", "trace", "moderate", monazite, monaziteImage);
         jbuttons[44] = monazite;
 
-        cards[45] = new TrumpCard("The Geophysicist", "<html>Specific gravity&emsp<br>&emsp or throw Magnetite Card<br>&emsp any time</html>", the_geophysicist, the_geophysicistImage);
+        cards[45] = new TrumpCard("The Geophysicist", "Specific Gravity", the_geophysicist, the_geophysicistImage);
         jbuttons[45] = the_geophysicist;
 
         cards[46] = new MineralCard("Calcite", "CaCO3", "carbonate", "hexagonal",
@@ -329,7 +330,7 @@ public class Deck implements ActionListener {
         jbuttons[46] = calcite;
 
         cards[47] = new MineralCard("Dolomite", "CaMg(CO3)2", "carbonate", "hexagonal",
-                "metamorphic sedimentary", 3.5, 2.9, "3 perfect", "low", "low", dolomite, dolomiteImage);
+                "metamorphic sedimentary", 4.0, 2.9, "3 perfect", "low", "low", dolomite, dolomiteImage);
         jbuttons[47] = dolomite;
 
         cards[48] = new MineralCard("Magnesite", "MgCO3", "carbonate", "hexagonal",
@@ -392,27 +393,57 @@ public class Deck implements ActionListener {
 
             if (jbuttonSource == jbuttons[select]) { //find card
 
-                selectedCard = cards[select];
+                selectedCard = cards[select]; //get clicked card
+
+                System.out.println(selectedCard.getName());
                 if(selectedCard == Play.shuffledDeck.get(0)){ //if card picked up
-
                     GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
+                    GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(1);
                     Play.shuffledDeck.remove(0); //remove card from pickup deck
+                    System.out.println(Play.shuffledDeck.size());
 
-                }else { //if card discarded
+                } else if (GameDisplay.gos == 0){ //if card discarded on first play of the game
 
-                    int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
-                    GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index); //remove card from hand
-                    Play.discardedCards.add(0, selectedCard); //add card to discard pile
+                    if(selectedCard.getName().startsWith("The ")){ //stop trump card being thrown on first play
 
-                    jbuttons[select].setVisible(false);
-                    if(selectedCard.getName().equals("The Geologist")){
+                        JOptionPane.showMessageDialog(null, "You cannot throw a Trump Card on the first play");
 
+                    } else { //mineral card thrown on first play
+
+                        int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
+                        GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index); //remove card from hand
+                        Play.discardedCards.add(0, selectedCard); //add card to discard pile
+                        jbuttons[select].setVisible(false);
+                        GameDisplay.gos = 1; //first play of the game complete
+                        GameDisplay.nextPlayer(); //move to next player
+                    }
+                } else {
+
+                    compare = 0;
+
+                    if(selectedCard.getName().equals("The Geologist")){ //select category for any
+
+                        jbuttons[select].setVisible(false);
+                        GameDisplay.choice = Game.firstHand();
+                        compare = 1;
+
+                    }else {
+
+                        compare = Game.compareValues(selectedCard); //check if card can be thrown
+                    }
+                    if (compare == 1) { //card can be thrown
+
+                        int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
+                        System.out.println("card # " + index);
+                        GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index); //remove card from hand
+                        GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(0);
+                        Play.discardedCards.add(0, selectedCard); //add card to discard pile
+                        jbuttons[select].setVisible(false);
+                        Game.gameOver();
+                        GameDisplay.nextPlayer();
                     }
                 }
-                GameDisplay.nextPlayer();
-
             }
-
         }
     }
 }
