@@ -19,6 +19,12 @@ public class TrumpCard extends Card{ //trump card information
     public String getName(){return this.name;}
 
     @Override
+    public JButton getButton(){return this.button;}
+
+    @Override
+    public ImageIcon getImage(){return this.image;}
+
+    @Override
     public String toString() { //used to print trump card values
         return "Name: " + super.name + ",  " +
                 "Category: " + this.getCategory()+ "\n" ;

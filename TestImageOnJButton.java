@@ -53,7 +53,6 @@ public class TestImageOnJButton extends JFrame implements ActionListener {
         add(calcite);
         add(cassiterite);
     }
-
     public static void main(String[] args) {
 
         panel = new TestImageOnJButton();

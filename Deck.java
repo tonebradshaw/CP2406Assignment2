@@ -136,7 +136,6 @@ public class Deck implements ActionListener {
     private JButton zircon = new JButton(zirconImage);
 
     static int compare;
-    //static Card [] hold;
     static Object jbuttonSource;
     static final int DECK_SIZE = 60;
     static Card selectedCard;
@@ -380,7 +379,7 @@ public class Deck implements ActionListener {
                 "sedimentary", 5.5, 4.3, "1 perfect, 1 good", "moderate", "moderate", geothite, geothiteImage);
         jbuttons[59] = geothite;
 
-        for(int i = 0; i < DECK_SIZE; ++i){
+        for(int i = 0; i < DECK_SIZE; ++i){ //add actionListeners to all JButtons
 
             jbuttons[i].addActionListener(this);
         }
@@ -389,22 +388,15 @@ public class Deck implements ActionListener {
 
         jbuttonSource = ae.getSource(); //set which card is clicked
 
-        for(int select = 0; select < DECK_SIZE; ++select) {
+        for (int select = 0; select < DECK_SIZE; ++select) {
 
-            if (jbuttonSource == jbuttons[select]) { //find card
+            if (jbuttons[select] == jbuttonSource) { //find JButton source position in jbutton array
 
-                selectedCard = cards[select]; //get clicked card
+                selectedCard = cards[select]; //clicked card is in the same position in cards array
 
-                System.out.println(selectedCard.getName());
-                if(selectedCard == Play.shuffledDeck.get(0)){ //if card picked up
-                    GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
-                    GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(1);
-                    Play.shuffledDeck.remove(0); //remove card from pickup deck
-                    System.out.println(Play.shuffledDeck.size());
+                if (GameDisplay.gos == 0){ //if card discarded on first play of the game
 
-                } else if (GameDisplay.gos == 0){ //if card discarded on first play of the game
-
-                    if(selectedCard.getName().startsWith("The ")){ //stop trump card being thrown on first play
+                    if (selectedCard.getName().startsWith("The ")){ //stop trump card being thrown on first play
 
                         JOptionPane.showMessageDialog(null, "You cannot throw a Trump Card on the first play");
 
@@ -413,7 +405,6 @@ public class Deck implements ActionListener {
                         int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
                         GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index); //remove card from hand
                         Play.discardedCards.add(0, selectedCard); //add card to discard pile
-                        jbuttons[select].setVisible(false);
                         GameDisplay.gos = 1; //first play of the game complete
                         GameDisplay.nextPlayer(); //move to next player
                     }
@@ -421,25 +412,28 @@ public class Deck implements ActionListener {
 
                     compare = 0;
 
-                    if(selectedCard.getName().equals("The Geologist")){ //select category for any
+                    if (selectedCard.getName().equals("The Geologist")){ //select category for any
 
-                        jbuttons[select].setVisible(false);
                         GameDisplay.choice = Game.firstHand();
                         compare = 1;
+                        Game.resetPass(); //reset the possibility of passing
+                        Game.gameOver(); //check if hand is empty
 
-                    }else {
+                    } else {
 
                         compare = Game.compareValues(selectedCard); //check if card can be thrown
                     }
                     if (compare == 1) { //card can be thrown
 
                         int index = GameDisplay.players[GameDisplay.playerNumber].getHand().indexOf(selectedCard);
-                        System.out.println("card # " + index);
                         GameDisplay.players[GameDisplay.playerNumber].getHand().remove(index); //remove card from hand
                         GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(0);
                         Play.discardedCards.add(0, selectedCard); //add card to discard pile
-                        jbuttons[select].setVisible(false);
-                        Game.gameOver();
+
+                        if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0){ //discard last card before showing the win
+                            jbuttons[select].setVisible(false);
+                        }
+                        Game.gameOver(); //check if hand is empty
                         GameDisplay.nextPlayer();
                     }
                 }

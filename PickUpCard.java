@@ -23,22 +23,20 @@ public class PickUpCard {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(Play.shuffledDeck.size() == 0) { //move discard pile to shuffled deck
+                if (Play.shuffledDeck.size() == 0){ //move discard pile to shuffled deck
 
-                    if(Play.discardedCards.size() == 0){
+                    if (Play.discardedCards.size() == 1){
 
-                        JOptionPane.showMessageDialog(null, "<html>There are no more cards left to pick up<br>" +
+                        JOptionPane.showMessageDialog(null, "<html>There are no more cards left to pick up<br><br>" +
                                 "As no-one has emptied their hand<br>the game is drawn</html");
                         System.exit(0);
-                    } else {
-                        Play.checkPile();
                     }
+                    Play.transferPile();
                 }
                 selectedCard = Play.shuffledDeck.get(0); //if card picked up
                 GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
                 GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(1);
                 Play.shuffledDeck.remove(0); //remove card from pickup deck
-                pickUp.setVisible(false);
                 GameDisplay.nextPlayer();
             }
         });

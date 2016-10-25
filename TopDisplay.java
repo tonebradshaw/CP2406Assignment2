@@ -6,13 +6,12 @@ import java.awt.*;
  */
 public class TopDisplay extends JPanel {
 
-    public ImageIcon cardBackImage;
-    BorderLayout border = new BorderLayout();
-    GridLayout grid = new GridLayout(2, 3);
-    FlowLayout flow = new FlowLayout();
-    Card card;
-    String category;
-    JLabel label1, label1a, label2, label2a, label3, label3a, label4, label4a, label5, label5a;
+    private ImageIcon cardBackImage;
+    private BorderLayout border = new BorderLayout();
+    private Card card;
+    private String category;
+    private JLabel label1, label1a, label2, label2a, label4, label4a;
+
 
     public TopDisplay(){
 
@@ -23,10 +22,9 @@ public class TopDisplay extends JPanel {
         int width = (int)screen.getWidth();
         int height = (int)screen.getHeight();
         setSize(width, 150);
+        setLayout(border);
 
         int rand = (int)(Math.random() * 60); //random card number
-
-        setLayout(border);
 
         card = deck.cards[rand];
         cardBackImage = new ImageIcon("src\\CardImages\\CardBack.png"); //image of back of card
@@ -35,7 +33,7 @@ public class TopDisplay extends JPanel {
         panel1.setBackground(Color.GREEN);
 
         //make labels1
-        label1 = new JLabel("<html><br>&emsp<b>Name: </b>William&emsp<br>&emsp<b>Cards : </b>4<br><br>" +
+        label1 = new JLabel("<html><br>&emsp<b>Name: </b>" + "&emsp<br>&emsp<b>Cards : </b>4<br><br>" +
                 "&emsp<b>Name: </b>James&emsp<br>&emsp<b>Cards : </b>11</html>");
         label1.setFont(font);
         label1.setForeground(Color.BLUE);
@@ -49,18 +47,18 @@ public class TopDisplay extends JPanel {
         panel2.setBackground(Color.GREEN);
 
         //make labels2
-        if(card.getName().startsWith("The ")){
+        if (card.getName().startsWith("The ")){
             category = ((TrumpCard)card).getCategory();
 
             label2 = new JLabel("<html><b>Active Card<br><br>Category: </b>" + category + "&emsp<br><b>Value </b>></html>");
-        }else{
+        } else {
             label2 = new JLabel("<html><b><b>Active Card<br><br>Category: </b>Specific Gravity&emsp<br><b>Value > </b><html>" + ((MineralCard)card).getSpecificGravity() + "&emsp");
         }
         label2.setFont(font);
         label2.setForeground(Color.MAGENTA);
         label2a = new JLabel(card.image);
 
-        //add lable2s to panel2
+        //add label2a to panel2
         panel2.add(label2);
         panel2.add(label2a);
 

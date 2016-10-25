@@ -31,18 +31,6 @@ public class MineralCard extends Card{ //inherit name from card and add extra in
         this.economicValue = economicValue;
     }
     //functions to retrieve card information
-    public String getFormula(){
-        return formula;
-    }
-    public String getClassification(){
-        return classification;
-    }
-    public String getCrystalSystem(){
-        return crystalSystem;
-    }
-    public String getOccurrence(){
-        return occurrence;
-    }
     public Double getHardness(){
         return hardness;
     }
@@ -61,6 +49,12 @@ public class MineralCard extends Card{ //inherit name from card and add extra in
 
     @Override
     public String getName(){ return this.name;}
+
+    @Override
+    public JButton getButton(){return this.button;}
+
+    @Override
+    public ImageIcon getImage(){return this.image;}
 
     public String toString() { //used to print card information
 

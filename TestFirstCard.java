@@ -16,7 +16,7 @@ public class TestFirstCard {
         deck = new Deck(); //make deck
         hand = new Card [8]; //make empty hand array
 
-        for(int i = 0; i < 8; ++i){ //load hand
+        for (int i = 0; i < 8; ++i){ //load hand
 
             hand[i] = deck.cards[i];
         }
@@ -25,7 +25,7 @@ public class TestFirstCard {
             category = selectFirstCategory(); //display cards and select category
             question = checkCategory(category); //check selected category
 
-        }while(question != 0); //until category is accepted
+        } while(question != 0); //until category is accepted
 
         int card = selectFirstCard(); //select card to throw
         System.out.println("Active Card is :\n" + hand[card] +
@@ -37,7 +37,7 @@ public class TestFirstCard {
         handCards = hand.length;
         StringBuilder message = new StringBuilder();
 
-        for(int i = 0; i < hand.length; ++i){ //append each card to hand to display
+        for (int i = 0; i < hand.length; ++i){ //append each card to hand to display
 
             String script = "\n" + hand[i];
             message.append(script);
@@ -45,7 +45,7 @@ public class TestFirstCard {
         message.append("\nChoose a category (1-5): \n");
         int count = 1;
 
-        for(int i = 0; i < categories.length; ++i){ //append each number selection with category
+        for (int i = 0; i < categories.length; ++i){ //append each number selection with category
 
             message.append(count);
             message.append("  ");
@@ -54,7 +54,7 @@ public class TestFirstCard {
             ++count;
         }
         do { //continue to choose the category number while selection is not among the choices
-            try{
+            try {
                 choice = JOptionPane.showInputDialog(null, message);
                 number = Integer.parseInt(choice);
 
@@ -62,11 +62,11 @@ public class TestFirstCard {
 
                 JOptionPane.showMessageDialog(null, "You must enter an integer 1-5");
             }
-            if(number < 1 || number > categories.length){
+            if (number < 1 || number > categories.length){
 
                 JOptionPane.showMessageDialog(null, "You must enter an integer 1-" + categories.length);
             }
-        }while(number < 1 || number > categories.length);
+        } while(number < 1 || number > categories.length);
         return number - 1; //change to element number
     }
     static public int checkCategory(int category){ //check if selected category is wanted
@@ -82,7 +82,7 @@ public class TestFirstCard {
         handCards = hand.length;
         StringBuilder message = new StringBuilder();
 
-        for(int i = 0; i < handCards; ++i){ //display hand with selection numbers
+        for (int i = 0; i < handCards; ++i){ //display hand with selection numbers
 
             String script = "\n" + count + " - " + hand[i];
             message.append(script);
@@ -92,7 +92,7 @@ public class TestFirstCard {
         message.append(hand.length);
 
         do { //continue until an acceptable card is chosen
-            try{
+            try {
                 choice = JOptionPane.showInputDialog(null, message);
                 number = Integer.parseInt(choice);
 
@@ -100,11 +100,11 @@ public class TestFirstCard {
 
                 JOptionPane.showMessageDialog(null, "You must enter an integer 1-" + hand.length);
             }
-            if(number < 1 || number > hand.length){
+            if (number < 1 || number > hand.length){
 
                 JOptionPane.showMessageDialog(null, "You must enter an integer 1-" + hand.length);
             }
-        }while(number < 1 || number > hand.length);
+        } while(number < 1 || number > hand.length);
         return number - 1; //change to element number
     }
 }

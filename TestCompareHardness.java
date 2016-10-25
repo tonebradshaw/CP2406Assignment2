@@ -14,7 +14,7 @@ public class TestCompareHardness {
         double value = ((MineralCard) deck.cards[number]).getHardness(); //get hardness value of first card
         double value1 = ((MineralCard) deck.cards[number + 1]).getHardness(); //get hardness value of second card
 
-        if(value == value1){ //if value of hardness of first card equals second card
+        if (value == value1){ //if value of hardness of first card equals second card
 
             System.out.println((deck.cards[number]).getName() + " has the same value \"" +
                     ((MineralCard) deck.cards[number]).getHardness() + "\" of Hardness as " + (deck.cards[number + 1]).getName() +
@@ -37,7 +37,7 @@ public class TestCompareHardness {
 
         int number = 1 + (int)(Math.random() * 59);
 
-        while(deck.cards[number].getName().startsWith("The ") ||
+        while (deck.cards[number].getName().startsWith("The ") ||
                 deck.cards[number + 1].getName().startsWith("The ")){ //make sure there are no trump cards
 
             ++number;

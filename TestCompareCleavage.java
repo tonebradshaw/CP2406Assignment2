@@ -42,7 +42,7 @@ public class TestCompareCleavage {
 
         int number = 1 + (int)(Math.random() * 59);
 
-        while((deck.cards[number]).getName().startsWith("The ") ||
+        while ((deck.cards[number]).getName().startsWith("The ") ||
                 (deck.cards[number + 1]).getName().startsWith("The ")){ //make sure there are no trump cards
 
             ++number;

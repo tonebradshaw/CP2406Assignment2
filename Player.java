@@ -8,7 +8,6 @@ public class Player {
     private String name;
     private ArrayList <Card> hand;
     private int pickupCardValue;
-    private int throwCard;
 
     public Player(String name){ //player constructor
 

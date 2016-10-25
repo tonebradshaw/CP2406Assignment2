@@ -7,7 +7,7 @@ public class TestDeck {
 
         Deck deck = new Deck();
 
-        for(int i = 0; i < 60; ++i){
+        for (int i = 0; i < 60; ++i){
 
             System.out.println(deck.cards[i]);
         }

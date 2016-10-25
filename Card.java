@@ -9,7 +9,6 @@ public abstract class Card {
     protected String name;
     protected JButton button;
     protected ImageIcon image;
-    protected ImageIcon backImage;
 
 
     public Card(String name, JButton button, ImageIcon image){ //card constructor
@@ -17,13 +16,11 @@ public abstract class Card {
         this.name = name;
         this.button = button;
         this.image = image;
-        backImage = new ImageIcon("src\\CardImages\\PickUp.png");
 
         Dimension dim = new Dimension(148,206);
         button.setPreferredSize(dim);
     }
     public abstract String getName();
-    public JButton getButton(){return button;}
-    public ImageIcon getImage(){return image;}
-    public ImageIcon getBackImage(){return backImage;}
+    public abstract JButton getButton();
+    public abstract ImageIcon getImage();
 }
