@@ -12,7 +12,7 @@ public class Top extends JPanel{
     private Card activeCard;
     private String categoryValue, playerName1, playerName2, playerName3, playerName4;
     private JLabel label1, label1a, label2, label2a;
-    private Color color, color1;
+    private Color color, color1, color2;
     private int playerCard1, playerCard2, playerCard3, playerCard4;
 
     static int numberOfPlayers, playerNumber;
@@ -23,7 +23,8 @@ public class Top extends JPanel{
 
         color = new Color(0,153,76);
         color1 = new Color(255,215,0);
-        Font font = new Font("Arial Rounded MT Bold", Font.PLAIN, 20);
+        color2 = new Color(232,104,80);
+        Font font = new Font("Arial Rounded MT Bold", Font.BOLD, 18);
         PickUpCard pickUpCard = new PickUpCard();
 
         if (GameDisplay.gos != 0) {
@@ -89,30 +90,32 @@ public class Top extends JPanel{
         //make labels1: other player's names and hand size
         if (numberOfPlayers == 3){
 
-            label1 = new JLabel("<html><br><b>Name: </b>" + playerName1 + "&emsp<br><b>Cards : </b>" + playerCard1 + "<br><br>" +
-                    "<b>Name: </b>" + playerName2 + "&emsp<br><b>Cards : </b>" + playerCard2 + "</html>");
+            label1 = new JLabel("<html><br><b>Name: </b><font color = '#990000'>" + playerName1 + "</font>&emsp<br><b><U>Cards: </U></b><font color = '#990000'>" + playerCard1 + "</font><br><br>" +
+                    "<b>Name: </b><font color = '#990000'>" + playerName2 + "</font>&emsp<br><b><U>Cards: </U></b><font color = '#990000'>" + playerCard2 + "</font></html>");
 
         } else if (numberOfPlayers == 4){
 
-            label1 = new JLabel("<html>&emsp<b>Name: </b>" + playerName1 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard1 + "<br><br>" +
-                    "&emsp<b>Name: </b>" + playerName2 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard2 + "<br><br>" +
-                    "&emsp<b>Name: </b>" + playerName3 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard3 + "</html>");
+            label1 = new JLabel("<html>&emsp<b>Name: </b><font color = '#990000'>" + playerName1 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard1 + "</font><br><br>" +
+                    "&emsp<b>Name: </b><font color = '#990000'>" + playerName2 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard2 + "</font><br><br>" +
+                    "&emsp<b>Name: </b><font color = '#990000'>" + playerName3 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard3 + "</font></html>");
 
         } else if (numberOfPlayers == 5){
 
-            label1 = new JLabel("<html>&emsp<b>Name: </b>" + playerName1 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard1 + "<br>" +
-                    "&emsp<b>Name: </b>" + playerName2 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard2 + "<br>" +
-                    "&emsp<b>Name: </b>" + playerName3 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard3 + "<br>" +
-                    "&emsp<b>Name: </b>" + playerName4 + "&emsp<br>&emsp<b>Cards : </b>" + playerCard4 + "</html>");
+            label1 = new JLabel("<html>&emsp<b>Name: </b><font color = '#990000'>" + playerName1 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard1 + "</font><br>" +
+                    "&emsp<b>Name: </b><font color = '#990000'>" + playerName2 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard2 + "</font><br>" +
+                    "&emsp<b>Name: </b><font color = '#990000'>" + playerName3 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard3 + "</font><br>" +
+                    "&emsp<b>Name: </b><font color = '#990000'>" + playerName4 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard4 + "</font></html>");
         }
 
+        Dimension dim4 = new Dimension(250,250);
         label1.setFont(font);
         label1.setForeground(color1);
+        label1.setPreferredSize(dim4);
         label1a = new JLabel(cardBackImage);
 
         //add label1s to panels
         panel1.add(label1, BorderLayout.WEST);
-        panel1.add(label1a, BorderLayout.CENTER);
+        panel1.add(label1a, BorderLayout.EAST);
         panel1.setVisible(true);
 
         JPanel panel2 = new JPanel(); //contains active card and values
@@ -123,7 +126,7 @@ public class Top extends JPanel{
             //make labels2: value, category and face card
             if (activeCard.getName().startsWith("The ")) {
 
-                label2 = new JLabel("<html><b>Active Card<br><br>Category: </b>" + GameDisplay.choice + "&emsp<br><b>Value </b></html>");
+                label2 = new JLabel("<html><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br><b>Value </b></html>");
 
             } else {
 
@@ -138,8 +141,8 @@ public class Top extends JPanel{
                 } else {
                     categoryValue = ((MineralCard)activeCard).getEconomicValue();
                 }
-                label2 = new JLabel("<html><b><b>Active Card<br><br>Category: </b>" + GameDisplay.choice + "&emsp<br><b>Value > </b><html>" +
-                        categoryValue + "&emsp");
+                label2 = new JLabel("<html><b><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br><b>Value: </b><html><font color = '#990000'>> " +
+                        categoryValue + "</font>&emsp");
             }
             label2.setFont(font);
             label2.setForeground(color1);

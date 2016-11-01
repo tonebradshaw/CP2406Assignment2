@@ -7,6 +7,8 @@ import java.util.Arrays;
  */
 public class Game {
 
+    static ShowVirtualKeyboard keyboard;
+
     static String [] cleavageHierarchy = {"none", "poor/none", "1 poor", "2 poor", "1 good", "1 good, 1 poor", "2 good", "3 good",
             "1 perfect", "1 perfect, 1 good", "1 perfect, 2 good", "2 perfect, 1 good", "3 perfect", "4 perfect", "6 perfect"};
     static String [] crustalAbundanceHierarchy = {"ultratrace", "trace", "low", "moderate", "high", "very high"};
@@ -79,6 +81,8 @@ public class Game {
         return compare;
     }
     public static String firstHand(){
+
+        keyboard = new ShowVirtualKeyboard();
 
         do {
             String category = JOptionPane.showInputDialog(null, "You need to choose the Category before discarding\n" +

@@ -25,6 +25,7 @@ public class GameDisplay extends JFrame implements ActionListener {
     static JPanel panel1, panel, panel3, panel4, panel5, displayHand, top;
     static Card activeCard;
     static Player playerOne, playerTwo, playerThree, playerFour, playerFive;
+    static ShowVirtualKeyboard keyboard;
 
     static int playerNumber, numberOfPlayers, gos, card, holdPlayerNumber;
     static String choice, playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
@@ -45,8 +46,10 @@ public class GameDisplay extends JFrame implements ActionListener {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize(); //get screen size; use next 2 lines as well
         int width = (int)screen.getWidth();
         int height = (int)screen.getHeight();
-
         setSize(width, height - 40);
+
+        font = new Font("Arial", Font.PLAIN, 18);
+        //javax.swing.UIManager.put("OptionPane.Font", font);
 
         numberOfPlayers = 1; //set number so it can respond to no player number being given
         gos = 0; //first play
@@ -73,7 +76,6 @@ public class GameDisplay extends JFrame implements ActionListener {
         panel5.setVisible(false);
 
         label1 = new JLabel(); //for rules
-        font = new Font("Arial", Font.PLAIN, 18);
         label1.setFont(font);
         //rules display
         label1.setText("<html>THE RULES<br><br>The number of players and their names are entered first<br>" +
@@ -106,6 +108,12 @@ public class GameDisplay extends JFrame implements ActionListener {
         player4 = new JLabel("Player4 Name");
         player5 = new JLabel("Player5 Name");
 
+        player1.setFont(font);
+        player2.setFont(font);
+        player3.setFont(font);
+        player4.setFont(font);
+        player5.setFont(font);
+
         //player name textfields
         player1Name = new JTextField(15);
         player2Name = new JTextField(15);
@@ -113,24 +121,43 @@ public class GameDisplay extends JFrame implements ActionListener {
         player4Name = new JTextField(15);
         player5Name = new JTextField(15);
 
+        player1Name.setFont(font);
+        player2Name.setFont(font);
+        player3Name.setFont(font);
+        player4Name.setFont(font);
+        player5Name.setFont(font);
+
         panel1.add(label1, BorderLayout.CENTER);
         add(panel1);
 
         //menus
+
         mainBar = new JMenuBar();
         menu1 = new JMenu("Quit");
         menu2 = new JMenu("Player Number");
         menu3 = new JMenu("Rules");
+        menu1.setFont(font);
+        menu2.setFont(font);
+        menu3.setFont(font);
 
         quit = new JMenuItem("Quit Game");
         rules = new JMenuItem("Show Rules");
         rules1 = new JMenuItem("Close Rules");
         ok = new JMenuItem("Add Names");
 
+        quit.setFont(font);
+        rules.setFont(font);
+        rules1.setFont(font);
+        ok.setFont(font);
+
         //player number selection
         three = new JRadioButton("Three");
         four = new JRadioButton("Four");
         five = new JRadioButton("Five");
+
+        three.setFont(font);
+        four.setFont(font);
+        five.setFont(font);
 
         group = new ButtonGroup();
         group.add(three);
@@ -153,8 +180,11 @@ public class GameDisplay extends JFrame implements ActionListener {
         menu3.add(rules);
         menu3.add(rules1);
 
+
         //start play button
         button = new JButton("Play Game");
+
+        button.setFont(font);
 
         //add actionListeners to menus
         quit.addActionListener(this);
@@ -261,6 +291,9 @@ public class GameDisplay extends JFrame implements ActionListener {
                 panel1.add(panel5, BorderLayout.CENTER);
                 panel5.setVisible(true);
             }
+            player1Name.requestFocus();
+            keyboard = new ShowVirtualKeyboard();
+
         } else if (source == button) { //start game
 
             switch(numberOfPlayers) {
@@ -269,6 +302,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 
                     if (player1Name.getText().equals("") || player2Name.getText().equals("") || player3Name.getText().equals("")) {
                         JOptionPane.showMessageDialog(null, "You need to enter all three names before playing"); //check all names have been entered
+
                     } else {
 
                         firstThreePlayersNames(); //get entered names and remove intro screen
