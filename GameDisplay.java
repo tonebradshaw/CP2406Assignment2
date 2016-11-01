@@ -180,7 +180,6 @@ public class GameDisplay extends JFrame implements ActionListener {
         menu3.add(rules);
         menu3.add(rules1);
 
-
         //start play button
         button = new JButton("Play Game");
 
@@ -482,7 +481,7 @@ public class GameDisplay extends JFrame implements ActionListener {
         top = new Top();
         panel1.setLayout(new BorderLayout());
 
-        if (players[playerNumber].getHand().size() < 8 || (players[playerNumber].getHand().size() > 9 &&
+        if (players[playerNumber].getHand().size() < 8 || (players[playerNumber].getHand().size() > 8 &&
                 players[playerNumber].getHand().size() <= 14)){ //use border layout or flow layout with JPanel depending on number of cards in hand
 
             panel.removeAll();

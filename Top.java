@@ -126,7 +126,7 @@ public class Top extends JPanel{
             //make labels2: value, category and face card
             if (activeCard.getName().startsWith("The ")) {
 
-                label2 = new JLabel("<html><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br><b>Value </b></html>");
+                label2 = new JLabel("<html><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br>&emsp<b>Value </b></html>");
 
             } else {
 
@@ -141,7 +141,7 @@ public class Top extends JPanel{
                 } else {
                     categoryValue = ((MineralCard)activeCard).getEconomicValue();
                 }
-                label2 = new JLabel("<html><b><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br><b>Value: </b><html><font color = '#990000'>> " +
+                label2 = new JLabel("<html><b><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br>&emsp<b>Value: </b><html><font color = '#990000'>> " +
                         categoryValue + "</font>&emsp");
             }
             label2.setFont(font);

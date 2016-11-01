@@ -20,8 +20,8 @@ public class DisplayHand extends JPanel {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();//get screen size
         int width = (int)screen.getWidth();
         int height = (int)screen.getHeight();
-        grid = new GridLayout(2, 10); //2 rows
-        grid1 = new GridLayout(1, 10); //1 row
+        grid = new GridLayout(2, 8); //2 rows
+        grid1 = new GridLayout(1, 8); //1 row
         color = new Color(0,153,76);
         setBackground(color);
 
@@ -29,9 +29,9 @@ public class DisplayHand extends JPanel {
 
             add(handCards.get(i).getButton());
         }
-        if (handCards.size() < 10){ //1 row if less than 10 cards else 2 rows
+        if (handCards.size() < 9){ //1 row if less than 10 cards else 2 rows
             setLayout(grid1);
-            dimension = new Dimension(handCards.size() * 148, 206);
+            dimension = new Dimension(handCards.size() * 165, 229);
             setPreferredSize(dimension);
 
         } else {
