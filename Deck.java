@@ -430,6 +430,7 @@ public class Deck implements ActionListener {
                         GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(0);
                         Play.discardedCards.add(0, selectedCard); //add card to discard pile
 
+
                         if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0){ //discard last card before showing the win
                             jbuttons[select].setVisible(false);
                         }

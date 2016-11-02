@@ -11,15 +11,23 @@ public class Play {
     static ArrayList <Card> discardedCards;
     static ArrayList <Card> shuffledDeck = new ArrayList<>();
 
-    static int numberOfPlayers, card;
+    static int numberOfPlayers, card, number, machineType;
 
     static String [] playerNames;
     static Card [] hold;
     static Player [] players;
 
+    static Boolean onSK;
+
     public static void main(String[] args) {
 
-        Deck deck = new Deck();
+        if (JOptionPane.showConfirmDialog(null, "Are you using a touchscreen", " ", JOptionPane.YES_NO_OPTION) == 0){ //check whether to display keyboard
+
+            onSK = true; //using touchscreen
+        } else {
+             onSK = false; //not using touchscreen
+        }
+        Deck deck = new Deck(); //create card deck
 
         for (int i = 0; i < deck.DECK_SIZE; ++i) { //convert Deck array to shuffledDeck ArrayList
 
@@ -45,25 +53,13 @@ public class Play {
     }
     public static void fillFourHands(){ //add cards to first four players hands
 
-        GameDisplay.playerOne.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
-        GameDisplay.playerTwo.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
-        GameDisplay.playerThree.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
+        fillThreeHands();
         GameDisplay.playerFour.getHand().add(shuffledDeck.get(0));
         shuffledDeck.remove(0);
     }
     public static void fillFiveHands(){ //add cards to first five players hands
 
-        GameDisplay.playerOne.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
-        GameDisplay.playerTwo.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
-        GameDisplay.playerThree.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
-        GameDisplay.playerFour.getHand().add(shuffledDeck.get(0));
-        shuffledDeck.remove(0);
+        fillFourHands();
         GameDisplay.playerFive.getHand().add(shuffledDeck.get(0));
         shuffledDeck.remove(0);
     }

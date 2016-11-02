@@ -35,7 +35,10 @@ public class PickUpCard {
                 }
                 selectedCard = Play.shuffledDeck.get(0); //if card picked up
                 GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
+                //set player pickupcard
                 GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(1);
+                //add pickupinrow to player
+                GameDisplay.players[GameDisplay.playerNumber].setPickupsInARow(GameDisplay.players[GameDisplay.playerNumber].getPickupsInARow() + 1);
                 Play.shuffledDeck.remove(0); //remove card from pickup deck
                 GameDisplay.nextPlayer();
             }

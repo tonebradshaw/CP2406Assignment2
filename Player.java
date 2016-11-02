@@ -7,7 +7,7 @@ public class Player {
 
     private String name;
     private ArrayList <Card> hand;
-    private int pickupCardValue;
+    private int pickupCardValue, pickupsInARow;
 
     public Player(String name){ //player constructor
 
@@ -29,5 +29,13 @@ public class Player {
     public int getPickUpCard(){
 
         return pickupCardValue;
+    }
+    public void setPickupsInARow(int inARowValue){
+
+        pickupsInARow = inARowValue;
+    }
+    public int getPickupsInARow(){
+
+        return pickupsInARow;
     }
 }

@@ -1,13 +1,20 @@
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Created by tony on 1/11/2016.
  */
-public class ShowVirtualKeyboard {
+public class ShowVirtualKeyboard extends JPanel {
 
     private static String sysroot;
     private static Runtime rt;
     private static Process pros;
 
     public ShowVirtualKeyboard() {
+
+        Dimension dim = new Dimension(100, 100);
+
+        setSize(dim);
 
         sysroot = System.getenv("SystemRoot");
         rt = Runtime.getRuntime();

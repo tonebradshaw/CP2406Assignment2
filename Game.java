@@ -17,6 +17,8 @@ public class Game {
 
     static int gos, compare, number;
 
+    static Font font;
+
     public Game(){
     }
     public static int compareValues(Card card){ //compare active card and chosen card
@@ -26,24 +28,34 @@ public class Game {
         if (Play.discardedCards.get(0).getName().startsWith("The ")){ //card follows trump card
 
             compare = 1;
+            resetPickupsInARow();
 
-        } else if (card.getName().startsWith("The ")) { //trump card was discarded
+        } else if (GameDisplay.resetValue == 1){ //card follows trump card
+
+            compare = 1;
+            GameDisplay.resetValue = 0;
+            resetPickupsInARow();
+
+        }else if (card.getName().startsWith("The ")) { //trump card was discarded
 
             GameDisplay.choice = ((TrumpCard) card).getCategory();
             resetPass();
             compare = 1;
+            resetPickupsInARow();
 
         } else if (GameDisplay.choice.equals("Hardness")){ //compare hardness values
 
             if (((MineralCard)card).getHardness() > ((MineralCard)Play.discardedCards.get(0)).getHardness()){
 
                 compare = 1;
+                resetPickupsInARow();
             }
         } else if (GameDisplay.choice.equals("Specific Gravity")) { //compare specific gravity values or pass Magnetite card
 
             if (((MineralCard)card).getSpecificGravity() > ((MineralCard)Play.discardedCards.get(0)).getSpecificGravity() || card.getName().equals("Magnetite")) {
 
                 compare = 1;
+                resetPickupsInARow();
             }
         } else if (GameDisplay.choice.equals("Cleavage")) { //compare cleavage values
 
@@ -53,6 +65,7 @@ public class Game {
             if (index1 > index2){ // if card cleavage is higher than active card
 
                 compare = 1;
+                resetPickupsInARow();
             }
         } else if (GameDisplay.choice.equals("Crustal Abundance")) { //compare crustal abundance values
 
@@ -62,6 +75,7 @@ public class Game {
             if (index1 > index2){ // if card crustal abundance is higher than active card
 
                 compare = 1;
+                resetPickupsInARow();
             }
         } else if (GameDisplay.choice.equals("Economic Value")) { //compare economic value values
 
@@ -71,6 +85,7 @@ public class Game {
             if (index1 > index2){ // if card economic value is higher than active card
 
                 compare = 1;
+                resetPickupsInARow();
             }
         }
         if (compare == 0){
@@ -80,13 +95,19 @@ public class Game {
         }
         return compare;
     }
-    public static String firstHand(){
+    public static String firstHand() {
 
-        keyboard = new ShowVirtualKeyboard();
+        if (Play.onSK){
 
+            keyboard = new ShowVirtualKeyboard();
+        }
+        font = new Font("Arial", Font.PLAIN, 18);
         do {
-            String category = JOptionPane.showInputDialog(null, "You need to choose the Category before discarding\n" +
+            JOptionPane option = new JOptionPane();
+            option.setFont(font);
+            String category = option.showInputDialog(null, "You need to choose the Category before discarding\n" +
                     "1) Hardness \n2) Specific Gravity\n3) Cleavage\n4) Crustal Abundance\n5) Economic Value");
+
             try {
                 number = Integer.parseInt(category);
 
@@ -131,15 +152,54 @@ public class Game {
                 break;
         }
         GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+        System.out.println("resetPass " + GameDisplay.playerNumber);
     }
     public static void gameOver(){ //display game over, winner and end game
 
         if (GameDisplay.players[GameDisplay.playerNumber].getHand().size() == 0){
 
+            GameDisplay.nextPlayer();
             JOptionPane.showMessageDialog(null, "Game Over");
             JOptionPane.showMessageDialog(null, "The Winner is " + GameDisplay.players[GameDisplay.playerNumber].getName());
 
             System.exit(0);
+        }
+    }
+    public static void resetPickupsInARow(){
+
+        GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
+        System.out.println("beginning of resetInARow " + GameDisplay.playerNumber);
+
+        switch(GameDisplay.numberOfPlayers){ //reset for different player number
+
+            case 3:
+                GameDisplay.players[GameDisplay.playerNumber].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+                System.out.println("in case 3 of resetInARow " + GameDisplay.playerNumber);
+                break;
+
+            case 4:
+                GameDisplay.players[GameDisplay.playerNumber].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+                break;
+
+            case 5:
+                GameDisplay.players[GameDisplay.playerNumber].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
+                GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
+                break;
+        }
+        System.out.println("end of resetInARow " + GameDisplay.playerNumber);
+        if(GameDisplay.resetValue == 1) {
+            resetPass();
         }
     }
 }

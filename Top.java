@@ -39,6 +39,7 @@ public class Top extends JPanel{
         numberOfPlayers = GameDisplay.numberOfPlayers;
         playerNumber = GameDisplay.playerNumber;
         players = GameDisplay.players;
+        System.out.println("Before populate left side top" + GameDisplay.playerNumber);
 
         if (numberOfPlayers == 3) { //3 player: populate names and hand size for left side information
 
@@ -79,6 +80,7 @@ public class Top extends JPanel{
             playerCard4 = players[GameDisplay.playerNumber].getHand().size();
             GameDisplay.incrementPlayerNumber();
         }
+        System.out.println("after populate left side top" + GameDisplay.playerNumber);
         cardBackImage = new ImageIcon("src\\CardImages\\CardBack.png"); //image of back of card
 
         JPanel panel1 = new JPanel(); //contains right side cards
@@ -124,9 +126,10 @@ public class Top extends JPanel{
         if (GameDisplay.gos == 1){ //first play of game
 
             //make labels2: value, category and face card
-            if (activeCard.getName().startsWith("The ")) {
+            if (activeCard.getName().startsWith("The ") || GameDisplay.resetValue == 1) {
 
-                label2 = new JLabel("<html><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br>&emsp<b>Value </b></html>");
+                label2 = new JLabel("<html><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br>&emsp<b>Value: </b></html>");
+                categoryValue = "";
 
             } else {
 
@@ -166,6 +169,7 @@ public class Top extends JPanel{
             add(panel2);
             add(panel4);
         }
+        System.out.println("At end of top" + GameDisplay.playerNumber);
     }
 }
 

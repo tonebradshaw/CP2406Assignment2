@@ -21,13 +21,14 @@ public class GameDisplay extends JFrame implements ActionListener {
     private JTextField player1Name, player2Name, player3Name, player4Name, player5Name;
     private Font font;
 
+
     static Color color;
     static JPanel panel1, panel, panel3, panel4, panel5, displayHand, top;
     static Card activeCard;
     static Player playerOne, playerTwo, playerThree, playerFour, playerFive;
     static ShowVirtualKeyboard keyboard;
 
-    static int playerNumber, numberOfPlayers, gos, card, holdPlayerNumber;
+    static int playerNumber, numberOfPlayers, gos, card, holdPlayerNumber, width, height, resetValue;
     static String choice, playerNameOne, playerNameTwo, playerNameThree, playerNameFour, playerNameFive;
 
     static final int NUMBER_OF_CARDS_PER_HAND = 8;
@@ -44,12 +45,10 @@ public class GameDisplay extends JFrame implements ActionListener {
         color = new Color(0,153,76);
         getContentPane().setBackground(color);
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize(); //get screen size; use next 2 lines as well
-        int width = (int)screen.getWidth();
-        int height = (int)screen.getHeight();
+        width = (int)screen.getWidth();
+        height = (int)screen.getHeight();
         setSize(width, height - 40);
-
         font = new Font("Arial", Font.PLAIN, 18);
-        //javax.swing.UIManager.put("OptionPane.Font", font);
 
         numberOfPlayers = 1; //set number so it can respond to no player number being given
         gos = 0; //first play
@@ -84,18 +83,20 @@ public class GameDisplay extends JFrame implements ActionListener {
                 "Categories are: Hardness, Specific Gravity, Cleavage, Crustal Abundance and Economic Value<br>" +
                 "After the first play, the active card name, category and value to beat are listed at the top of the selection panel<br>" +
                 "Values of Hardness and Specific Gravity are numerical and you must discard a higher value than displayed at the top of the selection panel<br><br>" +
-                "Values of Cleavage from low to high: \"none\", \"poor/none\", \"1 poor\", \"2 poor\", \"1 good\", \"1 good, 1 poor\", \"2 good\", \"3 good\",<br>" +
+                "<font color = '#990000'>Values of Cleavage from low to high:</font> \"none\", \"poor/none\", \"1 poor\", \"2 poor\", \"1 good\", \"1 good, 1 poor\", \"2 good\", \"3 good\",<br>" +
                 "\"1 perfect\", \"1 perfect, 1 good\", \"1 perfect, 2 good\", \"2 perfect, 1 good\", \"3 perfect\", \"4 perfect\", \"6 perfect\"<br><br>" +
-                "Values of Crustal Abundance from low to high: \"ultratrace\", \"trace\", \"low\", \"moderate\", \"high\", \"very high\"<br><br>" +
-                "Values of Economic Value from low to high: \"trivial\", \"low\", \"moderate\", \"high\", \"very high\", \"I'm rich!\"<br><br>" +
-                "Familiarize yourself with the Cleavage, Crustal Abundance and Economic Value value sequences above for a moment<br>" +
-                "Trump Cards reset the category and the value<br>" +
+                "<font color = '#990000'>Values of Crustal Abundance from low to high:</font> \"ultratrace\", \"trace\", \"low\", \"moderate\", \"high\", \"very high\"<br><br>" +
+                "<font color = '#990000'>Values of Economic Value from low to high:</font> \"trivial\", \"low\", \"moderate\", \"high\", \"very high\", \"I'm rich!\"<br><br>" +
+                "<font color = '#990000'><b>Familiarize yourself with the Cleavage, Crustal Abundance and Economic Value value sequences above for a moment</b></font><br><br>" +
+                "Trumps reset the category and the value<br>" +
                 "If there is no category value, you can discard any card<br>" +
+                "If you throw a Trump, you can then throw another card<br>" +
                 "Make your selection by clicking on the card<br>" +
                 "If you need to pass, you will be informed<br>" +
                 "If you cannot throw a card, you must pick up by clicking on the pickup card<br>" +
                 "When you discard, you must state your card name, active category and value<br>" +
                 "If your discard is deemed smaller than the active value, you will need to choose again<br>" +
+                "If everyone picks up twice, the discard pile value is reset" +
                 "</html>");
 
         label1.setVisible(false);
@@ -134,7 +135,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 
         mainBar = new JMenuBar();
         menu1 = new JMenu("Quit");
-        menu2 = new JMenu("Player Number");
+        menu2 = new JMenu("   Player Number   ");
         menu3 = new JMenu("Rules");
         menu1.setFont(font);
         menu2.setFont(font);
@@ -291,8 +292,10 @@ public class GameDisplay extends JFrame implements ActionListener {
                 panel5.setVisible(true);
             }
             player1Name.requestFocus();
-            keyboard = new ShowVirtualKeyboard();
 
+            if(Play.onSK) {
+                keyboard = new ShowVirtualKeyboard();
+            }
         } else if (source == button) { //start game
 
             switch(numberOfPlayers) {
@@ -300,6 +303,7 @@ public class GameDisplay extends JFrame implements ActionListener {
                 case 3:
 
                     if (player1Name.getText().equals("") || player2Name.getText().equals("") || player3Name.getText().equals("")) {
+
                         JOptionPane.showMessageDialog(null, "You need to enter all three names before playing"); //check all names have been entered
 
                     } else {
@@ -328,6 +332,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 
                     if (player1Name.getText().equals("") || player2Name.getText().equals("") || player3Name.getText().equals("")
                             || player4Name.getText().equals("")) {
+
                         JOptionPane.showMessageDialog(null, "You need to enter all four names before playing"); //check all names have been entered
                     } else {
                         firstThreePlayersNames(); //get entered names and remove intro screen
@@ -358,6 +363,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 
                     if (player1Name.getText().equals("") || player2Name.getText().equals("") || player3Name.getText().equals("")
                             || player4Name.getText().equals("") || player5Name.getText().equals("")) {
+
                         JOptionPane.showMessageDialog(null, "You need to enter all five names before playing"); //check all names have been entered
 
                     } else {
@@ -466,19 +472,25 @@ public class GameDisplay extends JFrame implements ActionListener {
         }
         return playerNumber;
     }
-
     public static void nextPlayer(){ //display next player screen
 
-        incrementPlayerNumber();
         panel1.removeAll();
         panel1.invalidate();
         panel1.revalidate();
         panel1.repaint();
         panel1.setVisible(false);
 
-        Play.playerWaitToStart(); //wait til player is ready
+        System.out.println("before if ResetValue != 1  " + GameDisplay.playerNumber);
+
+        if (resetValue != 1 && players[playerNumber].getHand().size() != 0 && !Play.discardedCards.get(0).getName().startsWith("The ")) {
+
+            incrementPlayerNumber();
+            Play.playerWaitToStart(); //wait til player is ready
+        }
+        System.out.println("after if ResetValue != 1 " + GameDisplay.playerNumber);
         displayHand = new DisplayHand(players[playerNumber].getHand());
         top = new Top();
+        System.out.println("After top" + GameDisplay.playerNumber);
         panel1.setLayout(new BorderLayout());
 
         if (players[playerNumber].getHand().size() < 8 || (players[playerNumber].getHand().size() > 8 &&
@@ -504,6 +516,7 @@ public class GameDisplay extends JFrame implements ActionListener {
         top.setVisible(true);
         panel1.setVisible(true);
 
+        System.out.println("before check pickup " + GameDisplay.playerNumber);
         holdPlayerNumber = playerNumber; //hold playerNumber to reset after cycle
 
         switch (numberOfPlayers) { //calculate if player needs to pass
@@ -513,41 +526,61 @@ public class GameDisplay extends JFrame implements ActionListener {
                 if (players[playerNumber].getPickUpCard() == 1 && (players[incrementPlayerNumber()].getPickUpCard() +
                         players[incrementPlayerNumber()].getPickUpCard()) == 0) { //if player has picked up and none of the remaining 2 players
                                                                                 //have picked up in the last round then player must pass
-                    incrementPlayerNumber();
-                    JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
-                            "\nMore then 1 player has discarded per round since you picked up" +
-                            "\nNo Trump Card has been thrown since you picked up" +
-                            "\nYou therefore must pass this turn");
                     playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
+                    passMessage();
+                    nextPlayer();
+
+                } else if (players[playerNumber].getPickupsInARow() >= 2 && players[incrementPlayerNumber()].getPickupsInARow() >=2 &&
+                        players[incrementPlayerNumber()].getPickupsInARow() >= 2){ //all players have picked up at least twice in a row recently
+
+                    playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
+                    pickupInARowMessage();
+                    resetValue = 1;
+                    Game.resetPickupsInARow();
+                    System.out.println("end of if Statement " + GameDisplay.playerNumber);
                     nextPlayer();
                 }
+                playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
+                break;
             case 4:
                 if (players[playerNumber].getPickUpCard() == 1 && (players[incrementPlayerNumber()].getPickUpCard() +
                         players[incrementPlayerNumber()].getPickUpCard() + players[incrementPlayerNumber()].getPickUpCard()) <= 1) { //if player has picked up and 1 or less
                                                                                                                                     // of the remaining 3 players have picked up in the last round then player must pass
-                    incrementPlayerNumber();
-                    JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
-                            "\nMore then 1 player has discarded per round since you picked up" +
-                            "\nNo Trump Card has been thrown since you picked up" +
-                            "\nYou therefore must pass this turn");
+                    passMessage();
+                    playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
+                    nextPlayer();
+
+                } else if (players[playerNumber].getPickupsInARow() >= 2 && players[incrementPlayerNumber()].getPickupsInARow() >=2 &&
+                        players[incrementPlayerNumber()].getPickupsInARow() >= 2 && players[incrementPlayerNumber()].getPickupsInARow() >= 2) { //all players have picked up at least twice in a row recently
+
+                    pickupInARowMessage();
+                    resetValue = 1;
+                    Game.resetPickupsInARow();
                     playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
                     nextPlayer();
                 }
+                break;
             case 5:
                 if (players[playerNumber].getPickUpCard() == 1 && (players[incrementPlayerNumber()].getPickUpCard() +
                         players[incrementPlayerNumber()].getPickUpCard() + players[incrementPlayerNumber()].getPickUpCard() +
-                        players[incrementPlayerNumber()].getPickUpCard()) <= 2) { //if player has picked up and 2 or less
+                        players[incrementPlayerNumber()].getPickUpCard()) <= 2 ) { //if player has picked up and 2 or less
                                                                                 //of the remaining 4 players have picked up in the last round then player must pass
-                    incrementPlayerNumber();
-                    JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
-                            "\nMore then 1 player has discarded per round since you picked up" +
-                            "\nNo Trump Card has been thrown since you picked up" +
-                            "\nYou therefore must pass this turn");
+                    passMessage();
+                    playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
+                    nextPlayer();
+
+                } else if (players[playerNumber].getPickupsInARow() >= 2 && players[incrementPlayerNumber()].getPickupsInARow() >=2 &&
+                        players[incrementPlayerNumber()].getPickupsInARow() >= 2 && players[incrementPlayerNumber()].getPickupsInARow() >= 2 &&
+                        players[incrementPlayerNumber()].getPickupsInARow() >= 2) { //all players have picked up at least twice in a row recently
+
+                    pickupInARowMessage();
+                    resetValue = 1;
+                    Game.resetPickupsInARow();
                     playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
                     nextPlayer();
                 }
+                break;
         }
-        playerNumber = holdPlayerNumber; //reset playerNumber after check for pass conditions
     }
     public static void playGame(){ //display first player's hand
 
@@ -558,7 +591,7 @@ public class GameDisplay extends JFrame implements ActionListener {
         panel1.setLayout(new BorderLayout());
 
         if (players[playerNumber].getHand().size() < 9 || (players[playerNumber].getHand().size() > 9 &&
-                players[playerNumber].getHand().size() <= 14)){ //use border layout or flow layout with JPanel depending on number of cards in hand
+                players[playerNumber].getHand().size() <= 18)){ //use border layout or flow layout with JPanel depending on number of cards in hand
 
             panel.setBackground(color);
             panel.setLayout(new FlowLayout());
@@ -587,5 +620,18 @@ public class GameDisplay extends JFrame implements ActionListener {
                 Game.resetPass();
             }
         }
+    }
+    public static void passMessage(){
+
+        JOptionPane.showMessageDialog(null, players[playerNumber].getName() + ", you have picked up from the deck recently" +
+                "\nMore then 1 player has discarded per round since you picked up" +
+                "\nNo Trump Card has been thrown since you picked up" +
+                "\nYou therefore must pass this turn");
+    }
+    public static void pickupInARowMessage(){
+
+        JOptionPane.showMessageDialog(null, "All players have just picked up twice in a row\n" +
+                "The category value has been reset\n" +
+                "You may throw any card of that category");
     }
 }
