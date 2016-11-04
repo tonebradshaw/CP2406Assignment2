@@ -6,9 +6,10 @@ import java.awt.*;
  */
 public class ShowVirtualKeyboard extends JPanel {
 
-    private static String sysroot;
-    private static Runtime rt;
-    private static Process pros;
+    static String sysroot;
+    static Runtime rt;
+    static Process pros;
+    static int key;
 
     public ShowVirtualKeyboard() {
 
@@ -27,6 +28,11 @@ public class ShowVirtualKeyboard extends JPanel {
             System.out.println("Umm, that's a little strange. Maybe you don't have an on screen keyboard");
         }
 
+    }
+    public static int getKey(){
+
+        key = 1234;
+        return key;
     }
     public static void removeKeyboard(){
 

@@ -30,7 +30,7 @@ public class Game {
             compare = 1;
             resetPickupsInARow();
 
-        } else if (GameDisplay.resetValue == 1){ //card follows trump card
+        } else if (GameDisplay.resetValue == 1){ //card follows value reset
 
             compare = 1;
             GameDisplay.resetValue = 0;
@@ -114,10 +114,12 @@ public class Game {
             } catch (Exception et){
 
                 JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
+                getKeyboard();
             }
             if (number < 0 || number > 5){
 
                 JOptionPane.showMessageDialog(null, "You must enter a number 1-5");
+                getKeyboard();
             }
         } while (number < 1 || number > 5);
 
@@ -152,7 +154,6 @@ public class Game {
                 break;
         }
         GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
-        System.out.println("resetPass " + GameDisplay.playerNumber);
     }
     public static void gameOver(){ //display game over, winner and end game
 
@@ -168,7 +169,6 @@ public class Game {
     public static void resetPickupsInARow(){
 
         GameDisplay.holdPlayerNumber = GameDisplay.playerNumber; //hold playerNumber to reset after cycle
-        System.out.println("beginning of resetInARow " + GameDisplay.playerNumber);
 
         switch(GameDisplay.numberOfPlayers){ //reset for different player number
 
@@ -177,7 +177,6 @@ public class Game {
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
                 GameDisplay.players[GameDisplay.incrementPlayerNumber()].setPickupsInARow(0);
                 GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
-                System.out.println("in case 3 of resetInARow " + GameDisplay.playerNumber);
                 break;
 
             case 4:
@@ -197,9 +196,18 @@ public class Game {
                 GameDisplay.playerNumber = GameDisplay.holdPlayerNumber;
                 break;
         }
-        System.out.println("end of resetInARow " + GameDisplay.playerNumber);
-        if(GameDisplay.resetValue == 1) {
-            resetPass();
+    }
+    public static void getKeyboard(){
+
+        if (Play.onSK){
+
+            try {
+                Runtime.getRuntime().exec("cmd /c" + System.getenv("SystemRoot") + "/system32/osk.exe");
+
+            } catch(Exception ex){
+
+                System.out.println("Umm, that's a little strange. Maybe you don't have an on screen keyboard");
+            }
         }
     }
 }

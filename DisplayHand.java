@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import static javax.swing.UIManager.get;
@@ -29,15 +30,17 @@ public class DisplayHand extends JPanel {
 
             add(handCards.get(i).getButton());
         }
-        if (handCards.size() < 9){ //1 row if less than 10 cards else 2 rows
+        if (handCards.size() < 9){ //1 row if less than 9 cards else 2 rows
+
             setLayout(grid1);
-            dimension = new Dimension(handCards.size() * 165, 229);
+            dimension = new Dimension(handCards.size() * 165, 230);
             setPreferredSize(dimension);
 
         } else {
 
             setLayout(grid);
-            setSize(width, height/2);
+            dimension = new Dimension(((int)(Math.ceil(((double) handCards.size())/2) * 165)), 450);
+            setPreferredSize(dimension);
         }
     }
 }

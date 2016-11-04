@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,10 +22,15 @@ public class Play {
 
     public static void main(String[] args) {
 
-        if (JOptionPane.showConfirmDialog(null, "Are you using a touchscreen", " ", JOptionPane.YES_NO_OPTION) == 0){ //check whether to display keyboard
+        UIManager.put("OptionPane.messageFont", new Font("System", Font.PLAIN, 18)); //set JOptionPane message font
+        UIManager.put("OptionPane.buttonFont", new Font("System", Font.PLAIN, 16)); //set JOptionPane button font
+
+        if (JOptionPane.showConfirmDialog(null, "Are you using a touchscreen", " Give On Screen Keyboard if necessary", JOptionPane.YES_NO_OPTION) == 0){ //check whether to display keyboard
 
             onSK = true; //using touchscreen
+
         } else {
+
              onSK = false; //not using touchscreen
         }
         Deck deck = new Deck(); //create card deck
@@ -65,21 +71,21 @@ public class Play {
     }
     public static void displayPlayerSequence(){ //display the players names in order of play
 
-        if(GameDisplay.numberOfPlayers == 3) {
+        if (GameDisplay.numberOfPlayers == 3) {
 
             String playerSequence = "The order of play is " + GameDisplay.playerNames[GameDisplay.playerNumber] + ", " + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()] + ", "
                     + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()];
             GameDisplay.incrementPlayerNumber(); //complete playerNumber cycle
             JOptionPane.showMessageDialog(null, playerSequence);
 
-        }else if(GameDisplay.numberOfPlayers == 4) {
+        } else if (GameDisplay.numberOfPlayers == 4) {
 
             String playerSequence = "The order of play is " + GameDisplay.playerNames[GameDisplay.playerNumber] + ", " + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()] + ", "
                     + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()] + ", " + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()];
             GameDisplay.incrementPlayerNumber(); //complete playerNumber cycle
             JOptionPane.showMessageDialog(null, playerSequence);
 
-        }else if(GameDisplay.numberOfPlayers == 5) {
+        } else if (GameDisplay.numberOfPlayers == 5) {
 
             String playerSequence = "The order of play is " + GameDisplay.playerNames[GameDisplay.playerNumber] + ", " + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()] + ", "
                     + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()] + ", " + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()] + ", " + GameDisplay.playerNames[GameDisplay.incrementPlayerNumber()];

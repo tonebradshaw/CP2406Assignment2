@@ -14,7 +14,7 @@ public class PickUpCard {
 
     public PickUpCard(){
 
-        pickUpImage = new ImageIcon("src\\CardImages\\PickUp.png");
+        pickUpImage = new ImageIcon(getClass().getResource("/CardImages/PickUp.png"));
         pickUp = new JButton(pickUpImage);
         Dimension dim = new Dimension(148,206);
         pickUp.setPreferredSize(dim);
@@ -33,14 +33,20 @@ public class PickUpCard {
                     }
                     Play.transferPile();
                 }
-                selectedCard = Play.shuffledDeck.get(0); //if card picked up
-                GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
-                //set player pickupcard
-                GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(1);
-                //add pickupinrow to player
-                GameDisplay.players[GameDisplay.playerNumber].setPickupsInARow(GameDisplay.players[GameDisplay.playerNumber].getPickupsInARow() + 1);
-                Play.shuffledDeck.remove(0); //remove card from pickup deck
-                GameDisplay.nextPlayer();
+                if (GameDisplay.resetValue == 1){
+
+                    JOptionPane.showMessageDialog(null, "You need to throw a card");
+
+                } else {
+                    selectedCard = Play.shuffledDeck.get(0); //if card picked up
+                    GameDisplay.players[GameDisplay.playerNumber].getHand().add(selectedCard); //add card to hand
+                    //set player pickupcard
+                    GameDisplay.players[GameDisplay.playerNumber].setPickUpCard(1);
+                    //add pickupinrow to player
+                    GameDisplay.players[GameDisplay.playerNumber].setPickupsInARow(GameDisplay.players[GameDisplay.playerNumber].getPickupsInARow() + 1);
+                    Play.shuffledDeck.remove(0); //remove card from pickup deck
+                    GameDisplay.nextPlayer();
+                }
             }
         });
     }

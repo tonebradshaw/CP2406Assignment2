@@ -32,14 +32,14 @@ public class Top extends JPanel{
         }
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize(); //find screen size
         int width = (int)screen.getWidth();
-        Dimension dim1 = new Dimension(width,250);
+        Dimension dim1 = new Dimension(width,220);
         setPreferredSize(dim1);
-        setLayout(new FlowLayout());setBackground(color);
+        setLayout(new BorderLayout());
+        setBackground(color);
 
         numberOfPlayers = GameDisplay.numberOfPlayers;
         playerNumber = GameDisplay.playerNumber;
         players = GameDisplay.players;
-        System.out.println("Before populate left side top" + GameDisplay.playerNumber);
 
         if (numberOfPlayers == 3) { //3 player: populate names and hand size for left side information
 
@@ -80,12 +80,11 @@ public class Top extends JPanel{
             playerCard4 = players[GameDisplay.playerNumber].getHand().size();
             GameDisplay.incrementPlayerNumber();
         }
-        System.out.println("after populate left side top" + GameDisplay.playerNumber);
-        cardBackImage = new ImageIcon("src\\CardImages\\CardBack.png"); //image of back of card
+        cardBackImage = new ImageIcon(getClass().getResource("/CardImages/CardBack.png")); //image of back of card
 
-        JPanel panel1 = new JPanel(); //contains right side cards
+        JPanel panel1 = new JPanel(); //contains left side names, hand size and back of card image
         panel1.setBackground(color);
-        Dimension dim2 = new Dimension(350,200); // size panel1
+        Dimension dim2 = new Dimension(450,220); // size panel1
         panel1.setPreferredSize(dim2);
         panel1.setLayout(new BorderLayout());
 
@@ -109,19 +108,23 @@ public class Top extends JPanel{
                     "&emsp<b>Name: </b><font color = '#990000'>" + playerName4 + "</font>&emsp<br>&emsp<b><U>Cards: </U></b><font color = '#990000'>" + playerCard4 + "</font></html>");
         }
 
-        Dimension dim4 = new Dimension(250,250);
-        label1.setFont(font);
+        label1.setFont(font); //holds names and hand size
         label1.setForeground(color1);
+        Dimension dim4 = new Dimension(250,220);
         label1.setPreferredSize(dim4);
-        label1a = new JLabel(cardBackImage);
+        label1a = new JLabel(cardBackImage); //holds back of card image
+        Dimension dim6 = new Dimension(165,220);
+        label1a.setPreferredSize(dim6);
 
         //add label1s to panels
         panel1.add(label1, BorderLayout.WEST);
         panel1.add(label1a, BorderLayout.EAST);
         panel1.setVisible(true);
 
-        JPanel panel2 = new JPanel(); //contains active card and values
+        JPanel panel2 = new JPanel(); //contains active card, active category and value
         panel2.setBackground(color);
+        Dimension dim5 = new Dimension(490,230); // size panel2
+        panel2.setPreferredSize(dim5);
 
         if (GameDisplay.gos == 1){ //first play of game
 
@@ -147,29 +150,33 @@ public class Top extends JPanel{
                 label2 = new JLabel("<html><b><b>&emsp<U>Active Card</U><br><br>Category: </b><font color = '#990000'>" + GameDisplay.choice + "</font>&emsp<br>&emsp<b>Value: </b><html><font color = '#990000'>> " +
                         categoryValue + "</font>&emsp");
             }
-            label2.setFont(font);
+            label2.setFont(font); //holds text
             label2.setForeground(color1);
-            label2a = new JLabel(activeCard.getImage());
+            label2a = new JLabel(activeCard.getImage()); //holds active card image
 
             //add lable2 and 2a to panel2
             panel2.add(label2);
             panel2.add(label2a);
             panel2.setVisible(true);
 
-            JPanel panel4 = new JPanel(); //contains left side cards
+            JPanel panel4 = new JPanel(); //contains pick up card
             panel4.setBackground(color);
-            Dimension dim3 = new Dimension(300,200);
+            Dimension dim3 = new Dimension(165,220);
             panel4.setPreferredSize(dim3);
             panel4.setLayout(new BorderLayout());
-            panel4.add(pickUpCard.getButton(), BorderLayout.EAST);
+            panel4.add(pickUpCard.getButton(), BorderLayout.CENTER);
             panel4.setVisible(true);
 
             //add panels to TopDisplay panel(BorderLayout)
-            add(panel1);
-            add(panel2);
-            add(panel4);
+            JPanel panel3 = new JPanel();
+            panel3.setBackground(color);
+            panel3.setLayout(new FlowLayout());
+            panel3.add(panel1);
+            panel3.add(panel2);
+            panel3.add(panel4);
+
+            add(panel3, BorderLayout.NORTH);
         }
-        System.out.println("At end of top" + GameDisplay.playerNumber);
     }
 }
 
